@@ -29,7 +29,7 @@
 - **Local Storage** - Lưu trữ dữ liệu trên máy trẻ
 - **Responsive Chat UI** - Giao diện chat thân thiện
 
-### 3. 🎯 **Hành trình Khám phá - Quiz Cảm xúc**
+### 3. 🎯 **Hành trình Khám phá - Bộ câu hỏi Cảm xúc**
 - **5 bài trắc nghiệm** về cảm xúc và tình huống
 - **Hệ thống điểm** và achievements
 - **Thư viện nội dung** với sách và video
@@ -104,7 +104,7 @@
 
 ### **Cho Học sinh:**
 1. **Góc Tâm sự** - Trò chuyện với Kẹo Ngọt
-2. **Khám phá** - Làm quiz và đọc sách
+2. **Khám phá** - Làm bộ câu hỏi và đọc sách
 3. **Thư giãn** - Chơi game và vẽ tranh
 
 ## 🔒 Bảo mật và An toàn

@@ -32,7 +32,7 @@ body {
     color: var(--text-dark);
     background: 
         linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
-        url('https://suckhoedoisong.qltns.mediacdn.vn/Images/thanhloan/2020/04/29/Tu-11-5-hoc-sinh-tieu-hoc-mam-non-Ha-Noi-di-hoc-tro-lai-2.jpg');
+        url('../images/bg-school.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -321,10 +321,7 @@ body::before {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 240, 245, 0.85) 100%);
     backdrop-filter: blur(25px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: sticky; /* keep header attached to top */
     z-index: 1000;
     border-bottom: 3px solid rgba(255, 107, 157, 0.3);
     border-radius: 0 0 25px 25px;
@@ -346,6 +343,7 @@ body::before {
     align-items: center;
     justify-content: space-between;
     padding: 15px 0;
+    flex-wrap: nowrap; /* Giữ 1 dòng */
 }
 
 /* Logo */
@@ -382,15 +380,24 @@ body::before {
     transform: scale(1.1);
 }
 
+/* Ensure brand title shows as two lines: "Kẹo Ngọt" and "Nhỏ Xinh" */
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    row-gap: 2px; /* gentle spacing between lines */
+}
+
 .logo-text h1 {
     font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: #E91E63;
-    margin-bottom: -5px;
+    margin-bottom: 2px; /* add space so the two lines don't touch */
     transition: var(--transition);
     cursor: pointer;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap; /* keep "Kẹo Ngọt" on one line */
 }
 
 .logo-text h1:hover {
@@ -406,6 +413,7 @@ body::before {
     transition: var(--transition);
     cursor: pointer;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap; /* keep "Nhỏ Xinh" on one line */
 }
 
 .logo-text p:hover {
@@ -419,7 +427,12 @@ body::before {
     list-style: none;
     gap: 30px;
     align-items: center;
+    flex-wrap: nowrap; /* Không xuống hàng */
 }
+
+/* Đảm bảo menu chiếm giữa và không đẩy nút đăng nhập xuống hàng */
+.nav { flex: 1; display: flex; justify-content: center; }
+.nav-list li { white-space: nowrap; }
 
 .nav-link {
     text-decoration: none;
@@ -513,21 +526,23 @@ body::before {
 
 /* Main Content */
 .main {
-    margin-top: 90px;
+    margin-top: 0; /* remove gap below header so hero sticks to header */
     min-height: calc(100vh - 90px);
+    position: relative;
+    z-index: 1; /* Bảo đảm nội dung nằm trên lớp phủ body::before */
 }
 
 /* Hero Section */
 .hero {
-    padding: 60px 0;
+    padding: 30px 0 60px; /* reduce top padding so hero touches header more closely */
     min-height: calc(100vh - 90px);
     display: flex;
     align-items: center;
     position: relative;
     background: linear-gradient(135deg, rgba(255, 229, 241, 0.86) 0%, rgba(232, 248, 245, 0.11) 50%, rgba(255, 248, 220, 0.75) 100%),
-                url('https://suckhoedoisong.qltns.mediacdn.vn/Images/thanhloan/2020/04/29/Tu-11-5-hoc-sinh-tieu-hoc-mam-non-Ha-Noi-di-hoc-tro-lai-2.jpg');
+                url('../images/bg-school.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center top; /* keep subject framed to the top to avoid cropping */
     background-repeat: no-repeat;
 }
 
@@ -1835,7 +1850,7 @@ elevenlabs-convai::part(send-button) {
         background-position: center top;
         background: 
             linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
-            url('https://suckhoedoisong.qltns.mediacdn.vn/Images/thanhloan/2020/04/29/Tu-11-5-hoc-sinh-tieu-hoc-mam-non-Ha-Noi-di-hoc-tro-lai-2.jpg');
+            url('../images/bg-school.jpg');
     }
     
     /* Reduce overlay opacity on mobile for better readability */

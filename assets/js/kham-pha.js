@@ -9,20 +9,51 @@ class UserProgress {
     }
 
     initData() {
-        if (!localStorage.getItem(this.storageKey)) {
             const defaultData = {
                 currentPoints: 0,
                 badges: [],
                 level: 1,
-                completedQuizzes: 0,
+            completedQuestionSets: 0,
                 readStories: [],
                 weeklyProgress: 0,
-                quizScores: [],
+            questionSetScores: [null, null, null, null, null],
                 totalStoriesRead: 0,
-                totalQuizzesCompleted: 0,
+            totalQuestionSetsCompleted: 0,
                 averageScore: 0,
                 lastActivity: new Date().toISOString()
             };
+
+        const existing = localStorage.getItem(this.storageKey);
+        if (!existing) {
+            localStorage.setItem(this.storageKey, JSON.stringify(defaultData));
+            return;
+        }
+
+        // Migrate old data structures safely
+        try {
+            const parsed = JSON.parse(existing) || {};
+            // Backfill missing fields
+            if (!Array.isArray(parsed.questionSetScores)) {
+                parsed.questionSetScores = [null, null, null, null, null];
+            } else if (parsed.questionSetScores.length < 5) {
+                // Normalize to 5 entries
+                while (parsed.questionSetScores.length < 5) parsed.questionSetScores.push(null);
+            }
+            if (typeof parsed.currentPoints !== 'number') parsed.currentPoints = 0;
+            if (!Array.isArray(parsed.badges)) parsed.badges = [];
+            if (typeof parsed.level !== 'number') parsed.level = 1;
+            if (typeof parsed.completedQuestionSets !== 'number') parsed.completedQuestionSets = 0;
+            if (!Array.isArray(parsed.readStories)) parsed.readStories = [];
+            if (typeof parsed.weeklyProgress !== 'number') parsed.weeklyProgress = 0;
+            if (typeof parsed.totalStoriesRead !== 'number') parsed.totalStoriesRead = 0;
+            if (typeof parsed.totalQuestionSetsCompleted !== 'number') parsed.totalQuestionSetsCompleted = 0;
+            if (typeof parsed.averageScore !== 'number') parsed.averageScore = 0;
+            if (!parsed.lastActivity) parsed.lastActivity = new Date().toISOString();
+
+            const merged = { ...defaultData, ...parsed };
+            localStorage.setItem(this.storageKey, JSON.stringify(merged));
+        } catch (e) {
+            // Reset to defaults if corrupted
             localStorage.setItem(this.storageKey, JSON.stringify(defaultData));
         }
     }
@@ -120,20 +151,29 @@ class UserProgress {
         }
     }
 
-    completeQuiz(score) {
+    completeQuestionSet(questionSetIndex, score) {
         const data = this.getData();
-        const newScores = [...data.quizScores, score];
-        const averageScore = newScores.reduce((a, b) => a + b, 0) / newScores.length;
+        const newScores = [...data.questionSetScores];
+        newScores[questionSetIndex] = score;
         
-        // Check for emotion expert badge BEFORE updating totalQuizzesCompleted
-        if (data.totalQuizzesCompleted === 0 && score >= 70) {
+        // Check if this is the first completion of any question set
+        const wasFirstCompletion = data.questionSetScores.every(score => score === null);
+        
+        // Check for emotion expert badge on first completion with good score
+        if (wasFirstCompletion && score >= 70) {
             this.addBadge('emotion_expert');
         }
         
+        // Count completed sets
+        const completedCount = newScores.filter(score => score !== null).length;
+        const completedScores = newScores.filter(score => score !== null);
+        const averageScore = completedScores.length > 0 ? 
+            completedScores.reduce((a, b) => a + b, 0) / completedScores.length : 0;
+        
         this.updateData({
-            completedQuizzes: data.completedQuizzes + 1,
-            totalQuizzesCompleted: data.totalQuizzesCompleted + 1,
-            quizScores: newScores,
+            completedQuestionSets: completedCount,
+            totalQuestionSetsCompleted: completedCount,
+            questionSetScores: newScores,
             averageScore: Math.round(averageScore * 10) / 10
         });
 
@@ -142,14 +182,46 @@ class UserProgress {
         this.addPoints(points);
 
         // Check for badge achievements
-        
-        if (data.totalQuizzesCompleted + 1 >= 5) {
-            this.addBadge('quiz_master');
+        if (completedCount >= 5) {
+            this.addBadge('question_master');
         }
         
         // Check for explorer badge (complete all activities)
-        if (data.totalStoriesRead >= 6 && data.totalQuizzesCompleted + 1 >= 5) {
+        if (data.totalStoriesRead >= 6 && completedCount >= 5) {
             this.addBadge('explorer');
+        }
+    }
+    
+    updateQuizSelectionCards() {
+        const data = this.getData();
+        
+        for (let i = 0; i < 5; i++) {
+            const card = document.querySelector(`[data-quiz="${i}"]`);
+            const statusElement = document.getElementById(`status-${i}`);
+            const scoreElement = document.getElementById(`score-${i}`);
+            const button = card?.querySelector('.start-quiz-btn');
+            
+            if (card && statusElement && scoreElement && button) {
+                const score = data.questionSetScores[i];
+                
+                if (score !== null) {
+                    // Completed
+                    card.classList.add('completed');
+                    statusElement.textContent = 'Đã hoàn thành';
+                    statusElement.className = 'quiz-status completed';
+                    scoreElement.textContent = `${score}%`;
+                    scoreElement.className = 'quiz-score completed';
+                    button.textContent = 'Làm lại';
+                } else {
+                    // Not started
+                    card.classList.remove('completed');
+                    statusElement.textContent = 'Chưa làm';
+                    statusElement.className = 'quiz-status not-started';
+                    scoreElement.textContent = 'Chưa có điểm';
+                    scoreElement.className = 'quiz-score not-started';
+                    button.textContent = 'Bắt đầu';
+                }
+            }
         }
     }
 
@@ -170,12 +242,12 @@ class UserProgress {
             }
             
             // Check for storyteller badge (read all stories and complete quizzes)
-            if (data.totalStoriesRead >= 6 && data.totalQuizzesCompleted >= 3) {
+            if (data.totalStoriesRead >= 6 && data.totalQuestionSetsCompleted >= 3) {
                 this.addBadge('storyteller');
             }
             
             // Check for helper badge (help others by sharing progress)
-            if (data.totalStoriesRead >= 4 && data.totalQuizzesCompleted >= 2) {
+            if (data.totalStoriesRead >= 4 && data.totalQuestionSetsCompleted >= 2) {
                 this.addBadge('helper');
             }
         }
@@ -208,18 +280,21 @@ class UserProgress {
             storyProgress.textContent = `${data.totalStoriesRead}/6`;
         }
 
-        const quizProgress = document.querySelector('.progress-item:nth-child(2) .progress-value');
-        if (quizProgress) {
-            quizProgress.textContent = `${data.totalQuizzesCompleted}/5`;
+        const questionSetProgress = document.querySelector('.progress-item:nth-child(2) .progress-value');
+        if (questionSetProgress) {
+            questionSetProgress.textContent = `${data.totalQuestionSetsCompleted}/5`;
         }
 
         const avgScore = document.querySelector('.progress-item:nth-child(3) .progress-value');
         if (avgScore) {
             avgScore.textContent = `${data.averageScore}/10`;
         }
+        
+        // Update quiz selection cards
+        this.updateQuizSelectionCards();
 
         // Update weekly progress
-        const weeklyProgress = Math.min((data.totalStoriesRead + data.totalQuizzesCompleted) * 15, 100);
+        const weeklyProgress = Math.min((data.totalStoriesRead + data.totalQuestionSetsCompleted) * 15, 100);
         
         // Update circular progress ring
         const progressCircle = document.querySelector('.progress-ring-circle');
@@ -254,7 +329,7 @@ class UserProgress {
         ];
         
         badgeItems.forEach((item, index) => {
-            const badgeIds = ['quiz_master', 'bookworm', 'emotion_expert', 'storyteller', 'helper', 'explorer'];
+            const badgeIds = ['question_master', 'bookworm', 'emotion_expert', 'storyteller', 'helper', 'explorer'];
             const badgeId = badgeIds[index];
             
             if (earnedBadges.includes(badgeId)) {
@@ -347,8 +422,8 @@ class UserProgress {
 // Initialize user progress
 const userProgress = new UserProgress();
 
-// Quiz System - Split into smaller quizzes
-const QUIZ_SIZE = 10; // 10 questions per quiz
+// Question Set System - Split into smaller question sets
+const QUESTION_SET_SIZE = 10; // 10 questions per question set
 const quizData = [
     {
         question: "Khi bạn cảm thấy buồn, bạn thường làm gì?",
@@ -904,30 +979,156 @@ const quizData = [
 
 let currentQuestion = 0;
 let score = 0;
-let currentQuiz = 0; // Track which quiz we're on
-let totalQuizzes = Math.ceil(quizData.length / QUIZ_SIZE);
+let currentQuestionSet = 0; // Track which question set we're on
+let totalQuestionSets = Math.ceil(quizData.length / QUESTION_SET_SIZE);
 
-// Function to get current quiz questions
-function getCurrentQuizQuestions() {
-    const startIndex = currentQuiz * QUIZ_SIZE;
-    const endIndex = Math.min(startIndex + QUIZ_SIZE, quizData.length);
+// Function to get current question set questions
+function getCurrentQuestionSetQuestions() {
+    const startIndex = currentQuestionSet * QUESTION_SET_SIZE;
+    const endIndex = Math.min(startIndex + QUESTION_SET_SIZE, quizData.length);
+    console.log('Getting questions for set', currentQuestionSet, 'from', startIndex, 'to', endIndex);
+    console.log('Total quiz data length:', quizData.length);
     return quizData.slice(startIndex, endIndex);
 }
 
-function initQuiz() {
-    updateQuizDisplay();
-    setupQuizEventListeners();
+function initQuestionSet() {
+    updateQuestionSetDisplay();
+    setupQuestionSetEventListeners();
 }
 
-function updateQuizDisplay() {
-    const currentQuizQuestions = getCurrentQuizQuestions();
+// Applause audio with unlock + fallback
+let applauseAudio;
+let audioUnlocked = false;
+let webAudioCtx;
+const applauseSources = [
+    'assets/sounds/applause.mp3',
+    'https://actions.google.com/sounds/v1/crowds/medium_applause.ogg'
+];
+
+function unlockAudioOnce() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    try {
+        if (!applauseAudio) {
+            applauseAudio = new Audio();
+            applauseAudio.preload = 'auto';
+            applauseAudio.crossOrigin = 'anonymous';
+            applauseAudio.volume = 0.8;
+            // try first working source
+            for (const src of applauseSources) {
+                const canPlay = applauseAudio.canPlayType(src.endsWith('.ogg') ? 'audio/ogg' : 'audio/mpeg');
+                if (canPlay) { applauseAudio.src = src; break; }
+            }
+            applauseAudio.load();
+        }
+        // Prepare Web Audio fallback
+        if (!webAudioCtx && window.AudioContext) {
+            webAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (webAudioCtx.state === 'suspended') {
+                webAudioCtx.resume().catch(() => {});
+            }
+        }
+    } catch (_) {}
+}
+
+document.addEventListener('click', unlockAudioOnce, { once: true, passive: true });
+
+function playApplause() {
+    // Try HTMLAudio first
+    if (applauseAudio) {
+        applauseAudio.currentTime = 0;
+        const p = applauseAudio.play();
+        if (p && typeof p.catch === 'function') {
+            p.catch(() => tryNextApplauseSource());
+        }
+        return;
+    }
+    // If not yet created (edge), create and try
+    try {
+        applauseAudio = new Audio();
+        applauseAudio.volume = 0.8;
+        for (const src of applauseSources) {
+            const canPlay = applauseAudio.canPlayType(src.endsWith('.ogg') ? 'audio/ogg' : 'audio/mpeg');
+            if (canPlay) { applauseAudio.src = src; break; }
+        }
+        applauseAudio.play().catch(() => tryNextApplauseSource());
+    } catch (_) {
+        playChimeFallback();
+    }
+}
+
+function tryNextApplauseSource() {
+    try {
+        if (!applauseAudio) return playChimeFallback();
+        const currentIndex = applauseSources.indexOf(applauseAudio.src.replace(location.origin + '/', ''));
+        const nextSrc = applauseSources[(currentIndex + 1) % applauseSources.length];
+        if (nextSrc && applauseAudio.src !== nextSrc) {
+            applauseAudio.src = nextSrc;
+            applauseAudio.currentTime = 0;
+            applauseAudio.play().catch(() => playChimeFallback());
+            return;
+        }
+    } catch (_) {}
+    playChimeFallback();
+}
+
+function playChimeFallback() {
+    // Simple pleasant chime using Web Audio API as a fallback
+    try {
+        if (!webAudioCtx && window.AudioContext) {
+            webAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (!webAudioCtx) return;
+        const now = webAudioCtx.currentTime;
+        const osc = webAudioCtx.createOscillator();
+        const gain = webAudioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now); // A5
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.3, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+        osc.connect(gain).connect(webAudioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.5);
+    } catch (_) {}
+}
+
+// Floating smile celebration
+function showSmileCelebration() {
+    const container = document.getElementById('quizContainer');
+    if (!container) return;
+    const smile = document.createElement('div');
+    smile.textContent = '😊';
+    smile.style.position = 'absolute';
+    smile.style.fontSize = '42px';
+    smile.style.left = '50%';
+    smile.style.top = '20px';
+    smile.style.transform = 'translateX(-50%)';
+    smile.style.animation = 'floatUp 1.2s ease-out forwards';
+    smile.style.pointerEvents = 'none';
+    container.style.position = 'relative';
+    container.appendChild(smile);
+    setTimeout(() => smile.remove(), 1300);
+}
+
+function updateQuestionSetDisplay() {
+    const currentQuestionSetQuestions = getCurrentQuestionSetQuestions();
     
-    if (!currentQuizQuestions || currentQuestion >= currentQuizQuestions.length) {
-        console.error('Quiz data not available or question index out of bounds');
+    console.log('Current question set:', currentQuestionSet);
+    console.log('Current question:', currentQuestion);
+    console.log('Questions in set:', currentQuestionSetQuestions);
+    
+    if (!currentQuestionSetQuestions || currentQuestionSetQuestions.length === 0) {
+        console.error('Question set data not available');
         return;
     }
     
-    const question = currentQuizQuestions[currentQuestion];
+    if (currentQuestion >= currentQuestionSetQuestions.length) {
+        console.error('Question index out of bounds:', currentQuestion, '>=', currentQuestionSetQuestions.length);
+        return;
+    }
+
+    const question = currentQuestionSetQuestions[currentQuestion];
     const progressFill = document.getElementById('progressFill');
     const progressText = document.getElementById('progressText');
     const quizQuestion = document.getElementById('quizQuestion');
@@ -935,13 +1136,17 @@ function updateQuizDisplay() {
 
     if (!progressFill || !progressText || !quizQuestion || !quizOptions) {
         console.error('Required quiz elements not found');
+        console.error('progressFill:', progressFill);
+        console.error('progressText:', progressText);
+        console.error('quizQuestion:', quizQuestion);
+        console.error('quizOptions:', quizOptions);
         return;
     }
 
     // Update progress
-    const progress = ((currentQuestion + 1) / currentQuizQuestions.length) * 100;
+    const progress = ((currentQuestion + 1) / currentQuestionSetQuestions.length) * 100;
     progressFill.style.width = progress + '%';
-    progressText.textContent = `Quiz ${currentQuiz + 1}/${totalQuizzes} - Câu ${currentQuestion + 1}/${currentQuizQuestions.length}`;
+    progressText.textContent = `Bộ câu hỏi ${currentQuestionSet + 1}/${totalQuestionSets} - Câu ${currentQuestion + 1}/${currentQuestionSetQuestions.length}`;
 
     // Update question
     quizQuestion.innerHTML = `<h4>${question.question}</h4>`;
@@ -966,7 +1171,7 @@ function updateQuizDisplay() {
     }
 }
 
-function setupQuizEventListeners() {
+function setupQuestionSetEventListeners() {
     const quizOptions = document.getElementById('quizOptions');
     const quizFeedback = document.getElementById('quizFeedback');
     const nextQuestionBtn = document.getElementById('nextQuestionBtn');
@@ -998,6 +1203,10 @@ function setupQuizEventListeners() {
                     <h4>Chính xác!</h4>
                     <p>${quizData[currentQuestion].explanation}</p>
                 `;
+
+                // Play applause sound and show smile animation
+                try { playApplause(); } catch(e) {}
+                showSmileCelebration();
             } else {
                 feedbackContent.innerHTML = `
                     <div class="feedback-icon">💡</div>
@@ -1012,33 +1221,33 @@ function setupQuizEventListeners() {
 
     nextQuestionBtn.addEventListener('click', () => {
         currentQuestion++;
-        const currentQuizQuestions = getCurrentQuizQuestions();
+        const currentQuestionSetQuestions = getCurrentQuestionSetQuestions();
         
-        if (currentQuestion < currentQuizQuestions.length) {
-            updateQuizDisplay();
+        if (currentQuestion < currentQuestionSetQuestions.length) {
+            updateQuestionSetDisplay();
         } else {
-            // Quiz completed, show results
-            showQuizResults();
+            // Question set completed, show results
+            showQuestionSetResults();
         }
     });
 }
 
-        function showQuizResults() {
+        function showQuestionSetResults() {
             const quizContainer = document.getElementById('quizContainer');
-            const currentQuizQuestions = getCurrentQuizQuestions();
-            const percentage = Math.round((score / currentQuizQuestions.length) * 100);
+            const currentQuestionSetQuestions = getCurrentQuestionSetQuestions();
+            const percentage = Math.round((score / currentQuestionSetQuestions.length) * 100);
             
-            // Save quiz results to localStorage
-            userProgress.completeQuiz(percentage);
+            // Save question set results to localStorage
+            userProgress.completeQuestionSet(currentQuestionSet, percentage);
             
             quizContainer.innerHTML = `
                 <div class="quiz-results">
                     <div class="results-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
-                    <h3>Kết quả Quiz ${currentQuiz + 1}/${totalQuizzes}</h3>
+                    <h3>Kết quả Bộ câu hỏi ${currentQuestionSet + 1}/${totalQuestionSets}</h3>
                     <div class="score-display">
-                        <span class="score-number">${score}/${currentQuizQuestions.length}</span>
+                        <span class="score-number">${score}/${currentQuestionSetQuestions.length}</span>
                         <span class="score-percentage">${percentage}%</span>
                     </div>
                     <p class="score-message">
@@ -1051,34 +1260,26 @@ function setupQuizEventListeners() {
                         <span>+${Math.round(percentage * 20)} điểm</span>
                     </div>
                     <div class="quiz-actions">
+                        <button class="back-to-selection-btn" id="backToSelectionBtn">Chọn bộ câu hỏi khác</button>
                         <button class="restart-quiz-btn" id="restartQuizBtn">Làm lại</button>
-                        ${currentQuiz < totalQuizzes - 1 ? 
-                            `<button class="next-quiz-btn" id="nextQuizBtn">Quiz tiếp theo</button>` : 
-                            `<button class="complete-all-btn" id="completeAllBtn">Hoàn thành tất cả</button>`
-                        }
                     </div>
                 </div>
             `;
             
             // Add event listeners for buttons
+            const backToSelectionBtn = document.getElementById('backToSelectionBtn');
+            if (backToSelectionBtn) {
+                backToSelectionBtn.addEventListener('click', backToSelection);
+            }
+            
             const restartBtn = document.getElementById('restartQuizBtn');
             if (restartBtn) {
-                restartBtn.addEventListener('click', restartQuiz);
-            }
-            
-            const nextQuizBtn = document.getElementById('nextQuizBtn');
-            if (nextQuizBtn) {
-                nextQuizBtn.addEventListener('click', nextQuiz);
-            }
-            
-            const completeAllBtn = document.getElementById('completeAllBtn');
-            if (completeAllBtn) {
-                completeAllBtn.addEventListener('click', completeAllQuizzes);
+                restartBtn.addEventListener('click', restartQuestionSet);
             }
         }
 
-function nextQuiz() {
-    currentQuiz++;
+function nextQuestionSet() {
+    currentQuestionSet++;
     currentQuestion = 0;
     score = 0;
     
@@ -1089,7 +1290,7 @@ function nextQuiz() {
             <div class="quiz-header">
                 <button class="back-to-start-btn" id="backToStartBtn">
                     <i class="fas fa-arrow-left"></i>
-                    Quay lại
+                    Chọn bộ câu hỏi khác
                 </button>
             </div>
             <div class="quiz-progress">
@@ -1136,15 +1337,7 @@ function nextQuiz() {
     // Add back to start button event listener
     const backBtn = document.getElementById('backToStartBtn');
     if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            const startSection = document.getElementById('quizStartSection');
-            const quizContainer = document.getElementById('quizContainer');
-            
-            if (startSection && quizContainer) {
-                startSection.style.display = 'block';
-                quizContainer.style.display = 'none';
-            }
-        });
+        backBtn.addEventListener('click', backToSelection);
     }
     
     // Update quiz display and setup event listeners
@@ -1152,7 +1345,7 @@ function nextQuiz() {
     setupQuizEventListeners();
 }
 
-function completeAllQuizzes() {
+function completeAllQuestionSets() {
     // Show completion message
     const quizContainer = document.getElementById('quizContainer');
     quizContainer.innerHTML = `
@@ -1161,8 +1354,8 @@ function completeAllQuizzes() {
                 <i class="fas fa-trophy"></i>
             </div>
             <h3>🎉 Chúc mừng!</h3>
-            <p>Bạn đã hoàn thành tất cả ${totalQuizzes} quiz!</p>
-            <p>Bạn đã đạt được huy hiệu <strong>Thầy Quiz</strong>!</p>
+            <p>Bạn đã hoàn thành tất cả ${totalQuestionSets} bộ câu hỏi!</p>
+            <p>Bạn đã đạt được huy hiệu <strong>Chuyên gia Câu hỏi</strong>!</p>
             <button class="restart-all-btn" id="restartAllBtn">Bắt đầu lại từ đầu</button>
         </div>
     `;
@@ -1170,16 +1363,33 @@ function completeAllQuizzes() {
     const restartAllBtn = document.getElementById('restartAllBtn');
     if (restartAllBtn) {
         restartAllBtn.addEventListener('click', () => {
-            currentQuiz = 0;
+            currentQuestionSet = 0;
             currentQuestion = 0;
             score = 0;
-            updateQuizDisplay();
-            setupQuizEventListeners();
+            updateQuestionSetDisplay();
+            setupQuestionSetEventListeners();
         });
     }
 }
 
-function restartQuiz() {
+function backToSelection() {
+    // Show quiz selection
+    const quizSelection = document.querySelector('.quiz-selection');
+    const quizContainer = document.getElementById('quizContainer');
+    
+    if (quizSelection) {
+        quizSelection.style.display = 'block';
+    }
+    
+    if (quizContainer) {
+        quizContainer.style.display = 'none';
+    }
+    
+    // Update UI to reflect current state
+    userProgress.updateUI();
+}
+
+function restartQuestionSet() {
     currentQuestion = 0;
     score = 0;
     
@@ -1190,7 +1400,7 @@ function restartQuiz() {
             <div class="quiz-header">
                 <button class="back-to-start-btn" id="backToStartBtn">
                     <i class="fas fa-arrow-left"></i>
-                    Quay lại
+                    Chọn bộ câu hỏi khác
                 </button>
             </div>
             <div class="quiz-progress">
@@ -1237,15 +1447,7 @@ function restartQuiz() {
     // Add back to start button event listener
     const backBtn = document.getElementById('backToStartBtn');
     if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            const startSection = document.getElementById('quizStartSection');
-            const quizContainer = document.getElementById('quizContainer');
-            
-            if (startSection && quizContainer) {
-                startSection.style.display = 'block';
-                quizContainer.style.display = 'none';
-            }
-        });
+        backBtn.addEventListener('click', backToSelection);
     }
     
     // Re-initialize quiz
@@ -1514,28 +1716,78 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize interactive features
     initStories();
-    initQuizStart();
+    initQuestionSetStart();
     
     console.log('Kham Pha page initialized successfully!');
+    console.log('Quiz selection cards found:', document.querySelectorAll('.quiz-selection-card .start-quiz-btn').length);
 });
 
-// Initialize quiz start functionality
-function initQuizStart() {
-    const startBtn = document.getElementById('startQuizBtn');
-    const startSection = document.getElementById('quizStartSection');
+// Initialize question set start functionality
+function initQuestionSetStart() {
+    // Handle quiz selection buttons
+    const quizSelectionCards = document.querySelectorAll('.quiz-selection-card .start-quiz-btn');
     const quizContainer = document.getElementById('quizContainer');
+    const quizSelection = document.querySelector('.quiz-selection');
     
-    if (startBtn && startSection && quizContainer) {
-        startBtn.addEventListener('click', () => {
-            // Hide start section
-            startSection.style.display = 'none';
-            
-            // Show quiz container
+    console.log('initQuestionSetStart called');
+    console.log('Found quiz selection cards:', quizSelectionCards.length);
+    console.log('Quiz container found:', !!quizContainer);
+    console.log('Quiz selection found:', !!quizSelection);
+    
+    // Direct binding for existing buttons
+    quizSelectionCards.forEach(button => {
+        button.addEventListener('click', () => handleStartQuiz(button));
+    });
+
+    // Delegated binding as fallback (in case buttons are re-rendered)
+    document.addEventListener('click', (e) => {
+        // Click on button
+        let targetBtn = e.target.closest('.quiz-selection-card .start-quiz-btn');
+        // Or click anywhere on the card
+        const targetCard = e.target.closest('.quiz-selection-card');
+        if (!targetBtn && targetCard) {
+            targetBtn = targetCard.querySelector('.start-quiz-btn');
+        }
+        if (!targetBtn) return;
+        handleStartQuiz(targetBtn);
+    });
+
+    function handleStartQuiz(buttonEl) {
+        const quizIndex = parseInt(buttonEl.getAttribute('data-quiz'));
+        console.log('Quiz button clicked, index:', quizIndex);
+        
+        // Set current question set
+        currentQuestionSet = isNaN(quizIndex) ? 0 : quizIndex;
+        currentQuestion = 0;
+        score = 0;
+        
+        console.log('Set currentQuestionSet to:', currentQuestionSet);
+        console.log('Reset currentQuestion to:', currentQuestion);
+        
+        // Highlight selected card
+        document.querySelectorAll('.quiz-selection-card').forEach(card => card.classList.remove('selected'));
+        const card = buttonEl.closest('.quiz-selection-card');
+        if (card) card.classList.add('selected');
+        
+        // Ensure quiz selection stays visible (do NOT hide)
+        if (quizSelection) {
+            quizSelection.style.removeProperty('display');
+        }
+        
+        // Show quiz container below selection
+        if (quizContainer) {
+            quizContainer.style.removeProperty('display');
             quizContainer.style.display = 'block';
-            
-            // Initialize quiz
-            initQuiz();
-        });
+            // Smooth scroll to the question block
+            setTimeout(() => {
+                quizContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 0);
+            console.log('Shown quiz container below selection');
+        }
+        
+        // Initialize question set
+        console.log('Initializing question set...');
+        initQuestionSet();
     }
 }
 

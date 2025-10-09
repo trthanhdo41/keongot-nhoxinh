@@ -1,0 +1,27 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bird body -->
+  <ellipse cx="200" cy="200" rx="40" ry="60" fill="none" stroke="#000" stroke-width="3"/>
+  
+  <!-- Bird head -->
+  <circle cx="200" cy="140" r="30" fill="none" stroke="#000" stroke-width="3"/>
+  
+  <!-- Bird beak -->
+  <polygon points="200 140, 190 120, 210 120" fill="none" stroke="#000" stroke-width="3"/>
+  
+  <!-- Bird eye -->
+  <circle cx="190" cy="130" r="5" fill="none" stroke="#000" stroke-width="2"/>
+  
+  <!-- Bird wings -->
+  <ellipse cx="160" cy="200" rx="30" ry="20" fill="none" stroke="#000" stroke-width="3"/>
+  <ellipse cx="240" cy="200" rx="30" ry="20" fill="none" stroke="#000" stroke-width="3"/>
+  
+  <!-- Bird tail -->
+  <polygon points="200 260, 160 300, 240 300" fill="none" stroke="#000" stroke-width="3"/>
+  
+  <!-- Bird legs -->
+  <line x1="190" y1="260" x2="180" y2="280" stroke="#000" stroke-width="3"/>
+  <line x1="210" y1="260" x2="220" y2="280" stroke="#000" stroke-width="3"/>
+  
+  <!-- Ground -->
+  <line x1="0" y1="350" x2="400" y2="350" stroke="#000" stroke-width="3"/>
+</svg>

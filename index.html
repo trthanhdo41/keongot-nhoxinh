@@ -16,20 +16,8 @@
     <!-- Font Việt hóa ổn định -->
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Loading Fallback -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@400&family=Quicksand:wght@300;400;500;600;700&display=swap');
-        
-        /* Force font loading */
-        .font-loading {
-            font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif !important;
-        }
-        
-        .font-loading-body {
-            font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/index.css">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -59,6 +47,7 @@
                     <ul class="nav-list">
                         <li><a href="#home" class="nav-link active">Trang chủ</a></li>
                         <li><a href="tam-su.html" class="nav-link">Góc Tâm sự</a></li>
+                                <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="kham-pha.html" class="nav-link">Hành trình Khám phá</a></li>
                         <li><a href="thu-gian.html" class="nav-link">Thư giãn</a></li>
                         <li><a href="#dang-nhap" class="nav-link login-btn">Đăng nhập</a></li>
@@ -134,10 +123,10 @@
                     <div class="welcome-section">
                         <div class="welcome-badge">
                             <i class="fas fa-star"></i>
-                            Chào mừng bạn đến với Kẹo Ngọt!
+                            <span>Chào mừng bạn đến với Kẹo Ngọt</span>
                             <i class="fas fa-star"></i>
                         </div>
-                        <h2 class="welcome-title">Nơi chia sẻ và khám phá cảm xúc!</h2>
+                        <h2 class="welcome-title">Cùng nhau khám phá những điều tuyệt vời từ những cảm xúc nhỏ bé!</h2>
                         <p class="welcome-text typing-text" id="typingText"></p>
                         <div class="hero-buttons">
                             <a href="tam-su.html" class="hero-btn primary">
@@ -176,15 +165,6 @@
                 <div class="features-grid">
                     <!-- Feature 1: Góc Tâm sự -->
                     <a href="tam-su.html" class="feature-card-large">
-                        <div class="feature-decoration">
-                            <div class="feature-badge">
-                                <i class="fas fa-bolt"></i>
-                                Mới
-                            </div>
-                            <div class="feature-emoji">
-                                <i class="fas fa-heart-circle"></i>
-                            </div>
-                        </div>
                         <div class="feature-icon-large">
                             <i class="fas fa-comments"></i>
                         </div>
@@ -196,61 +176,39 @@
                             <li><i class="fas fa-check"></i> Bảo mật tuyệt đối</li>
                         </ul>
                         <div class="feature-cta">
-                            <span>Bắt đầu chia sẻ</span>
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </a>
 
                     <!-- Feature 2: Hành trình Khám phá -->
-                    <div class="feature-card-large">
-                        <div class="feature-decoration">
-                            <div class="feature-badge coming-soon">
-                                <i class="fas fa-clock"></i>
-                                Sắp ra mắt
-                            </div>
-                            <div class="feature-emoji">
-                                <i class="fas fa-compass"></i>
-                            </div>
-                        </div>
+                    <a href="dong-hanh.html" class="feature-card-large">
                         <div class="feature-icon-large">
-                            <i class="fas fa-map-marked-alt"></i>
+                            <i class="fas fa-hands-helping"></i>
                         </div>
-                        <h3>Hành trình Khám phá</h3>
-                        <p>Học hỏi và khám phá thế giới cảm xúc qua các bài quiz và câu chuyện thú vị!</p>
+                        <h3>Đồng hành cùng em</h3>
+                        <p>Số gọi khẩn cấp và kênh liên hệ an toàn khi bạn cần giúp đỡ.</p>
                         <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Quiz về cảm xúc</li>
-                            <li><i class="fas fa-check"></i> Câu chuyện giáo dục</li>
-                            <li><i class="fas fa-check"></i> Kiến thức bổ ích</li>
+                            <li><i class="fas fa-check"></i> Gọi 111 – bảo vệ trẻ em</li>
+                            <li><i class="fas fa-check"></i> Liên hệ nhà trường</li>
+                            <li><i class="fas fa-check"></i> Chia sẻ với Kẹo Ngọt</li>
                         </ul>
-                        <div class="feature-cta disabled">
-                            <span>Đang phát triển</span>
-                            <i class="fas fa-hourglass-half"></i>
+                        <div class="feature-cta">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Feature 3: Thư giãn -->
                     <div class="feature-card-large">
-                        <div class="feature-decoration">
-                            <div class="feature-badge coming-soon">
-                                <i class="fas fa-clock"></i>
-                                Sắp ra mắt
-                            </div>
-                            <div class="feature-emoji">
-                                <i class="fas fa-gamepad"></i>
-                            </div>
-                        </div>
                         <div class="feature-icon-large">
                             <i class="fas fa-palette"></i>
                         </div>
                         <h3>Khu vực Thư giãn</h3>
                         <p>Chơi game vui nhộn và vẽ tranh sáng tạo để thư giãn sau những giờ học tập!</p>
                         <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Trò chơi giáo dục</li>
+                            <li><i class="fas fa-check"></i> Trò chơi vui nhộn</li>
                             <li><i class="fas fa-check"></i> Vẽ tranh sáng tạo</li>
-                            <li><i class="fas fa-check"></i> Âm nhạc thư giãn</li>
                         </ul>
                         <div class="feature-cta disabled">
-                            <span>Đang phát triển</span>
                             <i class="fas fa-hourglass-half"></i>
                         </div>
                     </div>
@@ -291,13 +249,6 @@
                         <p>Mọi cuộc trò chuyện đều được bảo mật tuyệt đối, chỉ có bạn và Kẹo Ngọt biết.</p>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h4>Hỗ trợ 24/7</h4>
-                        <p>Kẹo Ngọt luôn sẵn sàng đồng hành cùng bạn bất cứ lúc nào, ngày hay đêm.</p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -442,9 +393,6 @@
                         </a>
                     </div>
                     <p class="cta-note">
-                        <i class="fas fa-check-circle"></i>
-                        Không cần thẻ tín dụng
-                        <span class="separator">•</span>
                         <i class="fas fa-shield-alt"></i>
                         An toàn & Bảo mật
                         <span class="separator">•</span>

@@ -172,6 +172,32 @@
     margin: 0 auto;
 }
 
+/* Relax tabs */
+.relax-tabs {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 10px 0 24px;
+}
+.relax-tab-btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 2px solid #ff8c42;
+    background: #fff;
+    color: #ff8c42;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.relax-tab-btn:hover { box-shadow: 0 6px 16px rgba(255,140,66,.25); transform: translateY(-1px); }
+.relax-tab-btn.active { background: linear-gradient(135deg,#ff8c42,#ff6b9d); color: #fff; border-color: transparent; }
+
+/* Music player */
+.music-player { padding: 10px; background:#fff; border:1px solid #f1f5f9; border-radius:12px; }
+.playlist { display:flex; gap:10px; flex-wrap:wrap; }
+.track-btn { padding:8px 14px; border-radius:999px; border:1px solid #e5e7eb; background:#f9fafb; cursor:pointer; }
+.track-btn:hover { background:#eef2ff; }
+
 /* Features Preview */
 .features-preview {
     display: grid;
@@ -305,10 +331,17 @@
 
 /* Games Section - PREMIUM ANIMATIONS */
 .games-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
     margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
 }
 
 /* Coloring Game - Chiếm 2 cột */
@@ -328,6 +361,11 @@
     position: relative;
     overflow: hidden;
     border: 2px solid transparent;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .game-card::before {
@@ -483,6 +521,21 @@
     background: linear-gradient(135deg, #44A08D, #4ECDC4);
 }
 
+.image-btn.auto-generate {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    font-weight: 600;
+    border: 2px solid #ff5252;
+    animation: pulse 2s infinite;
+}
+
+.image-btn.auto-generate:hover {
+    background: linear-gradient(135deg, #ff5252, #ff7979);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+
 #coloringCanvas {
     border: 3px solid #FF6B9D;
     border-radius: 15px;
@@ -492,6 +545,18 @@
     transition: all 0.3s ease;
     max-width: 100%;
     height: auto;
+    display: block;
+    margin: 0 auto; /* ensure canvas is centered in its column */
+}
+
+/* Make mini-game canvases fill card width responsively */
+#dinoCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #coloringCanvas:hover {
@@ -594,6 +659,10 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .memory-stats {
@@ -601,6 +670,10 @@
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    align-items: center;
 }
 
 .memory-stats .stat {
@@ -637,6 +710,10 @@
     gap: 15px;
     max-width: 400px;
     margin: 0 auto;
+    justify-content: center;
+    align-content: center;
+    place-items: center;
+    width: fit-content;
 }
 
 .memory-card {
@@ -696,6 +773,122 @@
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 20px;
+    width: 100%;
+    align-items: center;
+}
+
+/* Ensure memory game card is perfectly centered */
+#memoryGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+}
+
+#memoryGame .game-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#memoryGame .game-header {
+    width: 100%;
+    text-align: center;
+}
+
+#memoryGame .game-header h3 {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#memoryGame .game-header p {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Responsive adjustments for memory game */
+@media (max-width: 768px) {
+    #memoryGame {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .memory-game-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .memory-grid {
+        max-width: 350px;
+        gap: 10px;
+    }
+    
+    .memory-card {
+        width: 70px;
+        height: 70px;
+        font-size: 1.5rem;
+    }
+    
+    .memory-stats {
+        gap: 15px;
+        max-width: 400px;
+    }
+    
+    .memory-stats .stat {
+        padding: 8px 15px;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #memoryGame {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 10px;
+    }
+    
+    .memory-grid {
+        max-width: 300px;
+        gap: 8px;
+    }
+    
+    .memory-card {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+    
+    .memory-stats {
+        gap: 10px;
+        max-width: 350px;
+    }
+    
+    .memory-stats .stat {
+        padding: 6px 12px;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+    
+    .memory-controls {
+        gap: 10px;
+        margin-top: 15px;
+    }
 }
 
 /* Puzzle Game Styles */
@@ -768,126 +961,15 @@
     flex-wrap: wrap;
 }
 
-/* Math Game Styles */
-.math-game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.math-question {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #F8F9FA, #E9ECEF);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.difficulty-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.difficulty-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    background: linear-gradient(135deg, #4ECDC4, #45B7B8);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
-}
-
-.difficulty-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
-}
-
-.difficulty-btn.active {
-    background: linear-gradient(135deg, #FF6B9D, #FF8C42);
-    transform: scale(1.05);
-}
-
-.math-answers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    max-width: 300px;
-}
-
-.answer-btn {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 15px;
-    background: linear-gradient(135deg, #FFD93D, #FFEAA7);
-    color: var(--text-dark);
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 217, 61, 0.3);
-}
-
-.answer-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 217, 61, 0.4);
-}
-
-.answer-btn.correct {
-    background: linear-gradient(135deg, #4ECDC4, #45B7B8);
-    color: white;
-    animation: correctPulse 0.6s ease;
-}
-
-.answer-btn.wrong {
-    background: linear-gradient(135deg, #FF6B9D, #FF8C42);
-    color: white;
-    animation: wrongShake 0.6s ease;
-}
-
-@keyframes correctPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-@keyframes wrongShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-.math-stats {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.math-stats .stat {
-    background: linear-gradient(135deg, #FF8C42, #FF6B9D);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
-    transition: all 0.3s ease;
-}
-
-.math-stats .stat:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
-}
 
 /* Piano Game Styles */
 .piano-game-expanded {
     grid-column: 1 / -1; /* Chiếm toàn bộ cột */
     max-width: none;
+    width: 100%;
+    overflow-x: auto; /* Cho phép cuộn ngang nếu cần */
+    margin: 0 -20px; /* Mở rộng ra ngoài padding của container */
+    padding: 0 20px; /* Thêm padding để không bị cắt */
 }
 
 .piano-container {
@@ -896,18 +978,22 @@
     align-items: center;
     gap: 30px;
     width: 100%;
+    min-width: 0; /* Cho phép thu nhỏ */
 }
 
 .piano-keys {
     display: flex;
     gap: 1px;
     background: linear-gradient(135deg, #2C3E50, #34495E);
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     position: relative;
-    min-width: 600px;
+    min-width: 500px; /* Giảm min-width */
+    max-width: 100%;
     justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Cho phép cuộn ngang */
 }
 
 .piano-key {
@@ -969,6 +1055,55 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Responsive Piano Game */
+@media (max-width: 768px) {
+    .piano-keys {
+        min-width: 400px;
+        padding: 15px;
+        gap: 0.5px;
+    }
+    
+    .piano-key {
+        width: 40px;
+        height: 120px;
+        font-size: 0.9rem;
+    }
+    
+    .piano-songs {
+        padding: 20px;
+        max-width: 100%;
+    }
+    
+    .song-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .piano-keys {
+        min-width: 350px;
+        padding: 10px;
+    }
+    
+    .piano-key {
+        width: 35px;
+        height: 100px;
+        font-size: 0.8rem;
+        padding-bottom: 10px;
+    }
+    
+    .piano-songs {
+        padding: 15px;
+    }
+    
+    .song-buttons {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
 }
 
 .piano-songs h4 {
@@ -1053,8 +1188,13 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .games-section {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        padding: 0 10px; /* Thêm padding cho mobile */
+        max-width: 100%;
     }
     
     .game-card {
@@ -1081,20 +1221,45 @@
         grid-template-columns: repeat(3, 1fr);
     }
     
+    /* Piano responsive improvements */
+    .piano-game-expanded {
+        margin: 0 -10px; /* Điều chỉnh margin cho mobile */
+        padding: 0 10px;
+    }
+    
     .piano-keys {
-        flex-wrap: wrap;
-        justify-content: center;
+        min-width: 350px; /* Giảm min-width cho mobile */
+        padding: 15px;
+        gap: 0.5px;
     }
     
     .piano-key {
         width: 35px;
         height: 100px;
+        font-size: 0.8rem;
     }
     
-    .piano-key.black {
-        width: 20px;
-        height: 70px;
-        margin-left: -10px;
+    .piano-songs {
+        padding: 20px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .piano-game-expanded {
+        margin: 0 -5px;
+        padding: 0 5px;
+    }
+    
+    .piano-keys {
+        min-width: 300px;
+        padding: 10px;
+    }
+    
+    .piano-key {
+        width: 30px;
+        height: 80px;
+        font-size: 0.7rem;
     }
 }
 
@@ -1595,4 +1760,6 @@
     .notify-section {
         padding: 30px 20px;
     }
+    
+    
 }

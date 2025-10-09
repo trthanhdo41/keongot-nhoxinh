@@ -354,7 +354,7 @@ function initTypingEffect() {
     const typingElement = document.getElementById('typingText');
     if (!typingElement) return;
     
-    const text = 'Hãy cùng Kẹo Ngọt khám phá những điều tuyệt vời, chia sẻ cảm xúc và vui chơi mỗi ngày nhé!';
+    const text = '';
     let index = 0;
     
     function typeWriter() {

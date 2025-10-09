@@ -13,18 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Loading Fallback -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@400&family=Quicksand:wght@300;400;500;600;700&display=swap');
-        
-        .font-loading {
-            font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif !important;
-        }
-        
-        .font-loading-body {
-            font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/kham-pha-inline.css">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -54,6 +44,7 @@
                     <ul class="nav-list">
                         <li><a href="index.html" class="nav-link">Trang chủ</a></li>
                         <li><a href="tam-su.html" class="nav-link">Góc Tâm sự</a></li>
+                                <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="kham-pha.html" class="nav-link active">Hành trình Khám phá</a></li>
                         <li><a href="thu-gian.html" class="nav-link">Thư giãn</a></li>
                         <li><a href="#dang-nhap" class="nav-link login-btn">Đăng nhập</a></li>
@@ -77,7 +68,7 @@
             <div class="container">
                 <div class="hero-content">
                     <h2 class="page-title">Hành trình Khám phá</h2>
-                    <p class="page-subtitle">Học hỏi và khám phá thế giới cảm xúc qua các bài quiz và câu chuyện thú vị!</p>
+                    <p class="page-subtitle">Học hỏi và khám phá thế giới cảm xúc qua các bộ câu hỏi và câu chuyện thú vị!</p>
                 </div>
             </div>
         </section>
@@ -90,69 +81,86 @@
                     <!-- Interactive Quiz Section -->
                     <div class="quiz-section slide-in-left">
                         <div class="section-header">
-                            <h3><i class="fas fa-question-circle float"></i> Quiz về Cảm xúc</h3>
+                            <h3><i class="fas fa-question-circle float"></i> Bộ câu hỏi về Cảm xúc</h3>
                             <p>Hãy thử sức với những câu hỏi thú vị về cảm xúc!</p>
                         </div>
                         
-                        <!-- Quiz System Overview -->
-                        <div class="quiz-overview">
-                            <h4><i class="fas fa-book-open"></i> Hệ thống Quiz</h4>
-                            <div class="quiz-system-info">
-                                <div class="quiz-system-item elastic-in stagger-1 hover-lift bounce-jump">
-                                    <div class="quiz-number">Quiz 1</div>
-                                    <div class="quiz-details">10 câu hỏi về cảm xúc cơ bản</div>
+                        <!-- Quiz Selection System -->
+                        <div class="quiz-selection">
+                            <h4><i class="fas fa-book-open"></i> Chọn Bộ câu hỏi</h4>
+                            <p class="selection-subtitle">Bạn có thể chọn bất kỳ bộ câu hỏi nào để bắt đầu!</p>
+                            <div class="quiz-selection-grid">
+                                <div class="quiz-selection-card" data-quiz="0">
+                                    <div class="quiz-card-header">
+                                        <div class="quiz-number">Bộ câu hỏi 1</div>
+                                        <div class="quiz-status" id="status-0">Chưa làm</div>
+                                    </div>
+                                    <div class="quiz-details">
+                                        <h5>Cảm xúc cơ bản</h5>
+                                        <p>10 câu hỏi về nhận biết và hiểu cảm xúc dành cho bạn</p>
+                                        <div class="quiz-score" id="score-0">Chưa có điểm</div>
+                                    </div>
+                                    <button class="start-quiz-btn" data-quiz="0">Bắt đầu</button>
                                 </div>
-                                <div class="quiz-system-item elastic-in stagger-2 hover-lift wiggle-bounce">
-                                    <div class="quiz-number">Quiz 2</div>
-                                    <div class="quiz-details">10 câu hỏi về quản lý cảm xúc</div>
+                                
+                                <div class="quiz-selection-card" data-quiz="1">
+                                    <div class="quiz-card-header">
+                                        <div class="quiz-number">Bộ câu hỏi 2</div>
+                                        <div class="quiz-status" id="status-1">Chưa làm</div>
+                                    </div>
+                                    <div class="quiz-details">
+                                        <h5>Quản lý cảm xúc</h5>
+                                        <p>10 câu hỏi về cách xử lý cảm xúc dành cho bạn</p>
+                                        <div class="quiz-score" id="score-1">Chưa có điểm</div>
+                                    </div>
+                                    <button class="start-quiz-btn" data-quiz="1">Bắt đầu</button>
                                 </div>
-                                <div class="quiz-system-item elastic-in stagger-3 hover-lift hop-skip">
-                                    <div class="quiz-number">Quiz 3</div>
-                                    <div class="quiz-details">10 câu hỏi về tình bạn</div>
+                                
+                                <div class="quiz-selection-card" data-quiz="2">
+                                    <div class="quiz-card-header">
+                                        <div class="quiz-number">Bộ câu hỏi 3</div>
+                                        <div class="quiz-status" id="status-2">Chưa làm</div>
+                                    </div>
+                                    <div class="quiz-details">
+                                        <h5>Tình bạn</h5>
+                                        <p>10 câu hỏi về cách kết bạn và duy trì tình bạn</p>
+                                        <div class="quiz-score" id="score-2">Chưa có điểm</div>
+                                    </div>
+                                    <button class="start-quiz-btn" data-quiz="2">Bắt đầu</button>
                                 </div>
-                                <div class="quiz-system-item elastic-in stagger-4 hover-lift spring-bounce">
-                                    <div class="quiz-number">Quiz 4</div>
-                                    <div class="quiz-details">10 câu hỏi về gia đình</div>
+                                
+                                <div class="quiz-selection-card" data-quiz="3">
+                                    <div class="quiz-card-header">
+                                        <div class="quiz-number">Bộ câu hỏi 4</div>
+                                        <div class="quiz-status" id="status-3">Chưa làm</div>
+                                    </div>
+                                    <div class="quiz-details">
+                                        <h5>Gia đình</h5>
+                                        <p>10 câu hỏi về mối quan hệ gia đình</p>
+                                        <div class="quiz-score" id="score-3">Chưa có điểm</div>
+                                    </div>
+                                    <button class="start-quiz-btn" data-quiz="3">Bắt đầu</button>
                                 </div>
-                                <div class="quiz-system-item elastic-in stagger-5 hover-lift bounce-jump">
-                                    <div class="quiz-number">Quiz 5</div>
-                                    <div class="quiz-details">10 câu hỏi về học tập</div>
+                                
+                                <div class="quiz-selection-card" data-quiz="4">
+                                    <div class="quiz-card-header">
+                                        <div class="quiz-number">Bộ câu hỏi 5</div>
+                                        <div class="quiz-status" id="status-4">Chưa làm</div>
+                                    </div>
+                                    <div class="quiz-details">
+                                        <h5>Học tập</h5>
+                                        <p>10 câu hỏi về cảm xúc trong học tập</p>
+                                        <div class="quiz-score" id="score-4">Chưa có điểm</div>
+                                    </div>
+                                    <button class="start-quiz-btn" data-quiz="4">Bắt đầu</button>
                                 </div>
                             </div>
                             <div class="quiz-total-info">
-                                <p><strong>Tổng cộng: 5 quiz × 10 câu = 50 câu hỏi</strong></p>
-                                <p>Hoàn thành tất cả để đạt huy hiệu <strong>Quiz Master</strong> 🏆</p>
+                                <p><strong>Tổng cộng: 5 bộ câu hỏi × 10 câu = 50 câu hỏi</strong></p>
+                                <p>Hoàn thành tất cả để đạt huy hiệu <strong>Chuyên gia Câu hỏi</strong> 🏆</p>
                             </div>
                         </div>
                         
-                        <!-- Quiz Start Button -->
-                        <div class="quiz-start-section" id="quizStartSection">
-                            <div class="quiz-start-card">
-                                <div class="start-icon">
-                                    <i class="fas fa-play-circle"></i>
-                                </div>
-                                <h3>Bắt đầu Quiz về Cảm xúc</h3>
-                                <p>Hãy sẵn sàng để khám phá thế giới cảm xúc của bạn!</p>
-                                <div class="start-info">
-                                    <div class="start-info-item">
-                                        <i class="fas fa-list-ol"></i>
-                                        <span>5 quiz, mỗi quiz 10 câu</span>
-                                    </div>
-                                    <div class="start-info-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>~50 phút để hoàn thành</span>
-                                    </div>
-                                    <div class="start-info-item">
-                                        <i class="fas fa-trophy"></i>
-                                        <span>Đạt huy hiệu Quiz Master</span>
-                                    </div>
-                                </div>
-                                <button class="start-quiz-btn" id="startQuizBtn">
-                                    <i class="fas fa-rocket"></i>
-                                    Bắt đầu Quiz
-                                </button>
-                            </div>
-                        </div>
                         
                         <!-- Quiz Container (Hidden initially) -->
                         <div class="quiz-container" id="quizContainer" style="display: none;">
@@ -161,7 +169,7 @@
                                     <div class="progress-bar">
                                         <div class="progress-fill" id="progressFill"></div>
                                     </div>
-                                    <span class="progress-text" id="progressText">Quiz 1/5 - Câu 1/10</span>
+                                    <span class="progress-text" id="progressText">Bộ câu hỏi 1/5 - Câu 1/10</span>
                                 </div>
                                 
                                 <div class="quiz-question" id="quizQuestion">
@@ -212,15 +220,11 @@
                                     <div class="story-icon">
                                         <i class="fas fa-smile"></i>
                                     </div>
-                                    <div class="story-badge">Mới</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Chú Gấu và Cảm xúc</h4>
                                     <p>Một câu chuyện về cách chú gấu học cách quản lý cảm xúc của mình...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">5 phút</span>
-                                        <span class="story-level">Dễ</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
@@ -230,15 +234,11 @@
                                     <div class="story-icon">
                                         <i class="fas fa-handshake"></i>
                                     </div>
-                                    <div class="story-badge">Phổ biến</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Bạn bè và Sự chia sẻ</h4>
                                     <p>Học cách chia sẻ cảm xúc với bạn bè một cách tích cực...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">7 phút</span>
-                                        <span class="story-level">Trung bình</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
@@ -248,15 +248,11 @@
                                     <div class="story-icon">
                                         <i class="fas fa-fist-raised"></i>
                                     </div>
-                                    <div class="story-badge">Khuyến nghị</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Vượt qua Nỗi sợ</h4>
                                     <p>Một câu chuyện về cách đối mặt và vượt qua những nỗi sợ hãi...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">10 phút</span>
-                                        <span class="story-level">Khó</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
@@ -266,15 +262,11 @@
                                     <div class="story-icon">
                                         <i class="fas fa-users"></i>
                                     </div>
-                                    <div class="story-badge">Mới</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Làm việc nhóm</h4>
                                     <p>Học cách hợp tác và làm việc cùng bạn bè để đạt được mục tiêu chung...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">8 phút</span>
-                                        <span class="story-level">Trung bình</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
@@ -284,15 +276,11 @@
                                     <div class="story-icon">
                                         <i class="fas fa-lightbulb"></i>
                                     </div>
-                                    <div class="story-badge">Phổ biến</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Sáng tạo và Tưởng tượng</h4>
                                     <p>Khám phá sức mạnh của trí tưởng tượng và cách sáng tạo trong cuộc sống...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">6 phút</span>
-                                        <span class="story-level">Dễ</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
@@ -302,130 +290,23 @@
                                     <div class="story-icon">
                                         <i class="fas fa-seedling"></i>
                                     </div>
-                                    <div class="story-badge">Khuyến nghị</div>
                                 </div>
                                 <div class="story-content">
                                     <h4>Trách nhiệm và Tự lập</h4>
                                     <p>Học cách tự chăm sóc bản thân và có trách nhiệm với những việc mình làm...</p>
-                                    <div class="story-meta">
-                                        <span class="story-duration">9 phút</span>
-                                        <span class="story-level">Trung bình</span>
-                                    </div>
+                                    
                                 </div>
                                 <button class="read-story-btn">Đọc ngay</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Achievement System -->
-                    <div class="achievement-section">
-                        <div class="section-header">
-                            <h3><i class="fas fa-trophy"></i> Hệ thống Phần thưởng</h3>
-                            <p>Thu thập huy hiệu và điểm thưởng khi hoàn thành các thử thách</p>
-                        </div>
-                        
-                        <div class="achievement-stats">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h4>Điểm hiện tại</h4>
-                                    <span class="stat-value" id="currentPoints">0</span>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-medal"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h4>Huy hiệu</h4>
-                                    <span class="stat-value" id="badgeCount">0/6</span>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h4>Cấp độ</h4>
-                                    <span class="stat-value" id="currentLevel">Cấp 1</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="badges-collection">
-                            <h4>Bộ sưu tập Huy hiệu</h4>
-                            <div class="badges-grid">
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-bullseye"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Thầy Quiz</h5>
-                                        <p>Làm xong 5 bài quiz</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-book"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Mọt Sách</h5>
-                                        <p>Đọc 6 câu chuyện</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-heart"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Chuyên Gia Cảm Xúc</h5>
-                                        <p>Làm quiz đầu tiên đạt ≥70%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-lock"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Người Kể Chuyện</h5>
-                                        <p>Đọc 6 câu chuyện + làm 3 quiz</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-lock"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Người Giúp Đỡ</h5>
-                                        <p>Đọc 4 câu chuyện + làm 2 quiz</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="badge-item locked">
-                                    <div class="badge-icon">
-                                        <i class="fas fa-lock"></i>
-                                    </div>
-                                    <div class="badge-info">
-                                        <h5>Nhà Thám Hiểm</h5>
-                                        <p>Đọc 6 câu chuyện + làm 5 quiz</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Progress Tracking -->
-                    <div class="progress-section slide-in-right">
+                    <div class="progress-section slide-in-right" style="display: none;">
                         <div class="section-header">
-                            <h3><i class="fas fa-chart-bar glow"></i> Theo dõi Tiến độ</h3>
+                            <h3><i class="fas fa-chart-bar glow"></i> Theo dõi các hoạt động</h3>
                             <p>Xem tiến độ học tập và những thành tích đã đạt được</p>
                         </div>
                         
@@ -477,7 +358,7 @@
                                         <i class="fas fa-question-circle"></i>
                                     </div>
                                     <div class="progress-info">
-                                        <span class="progress-label">Quiz đã hoàn thành</span>
+                                        <span class="progress-label">Bộ câu hỏi đã hoàn thành</span>
                                         <span class="progress-value">0/5</span>
                                     </div>
                                 </div>

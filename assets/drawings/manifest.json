@@ -1,0 +1,14 @@
+[
+  { "id": "house", "title": "Nhà", "emoji": "🏠" },
+  { "id": "flower", "title": "Hoa", "emoji": "🌸" },
+  { "id": "butterfly", "title": "Bướm", "emoji": "🦋" },
+  { "id": "tree", "title": "Cây", "emoji": "🌳" },
+  { "id": "car", "title": "Xe hơi", "emoji": "🚗" },
+  { "id": "cat", "title": "Mèo", "emoji": "🐱" },
+  { "id": "sun", "title": "Mặt trời", "emoji": "☀️" },
+  { "id": "heart", "title": "Trái tim", "emoji": "❤️" },
+  { "id": "fish", "title": "Cá", "emoji": "🐟" },
+  { "id": "bird", "title": "Chim", "emoji": "🐦" }
+]
+
+
