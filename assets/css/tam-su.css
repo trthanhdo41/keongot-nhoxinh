@@ -135,8 +135,9 @@
 }
 
 .support-card h3 {
-    font-size: 1.5rem;
-    color: var(--text-dark);
+    font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary-pink);
     margin-bottom: 15px;
 }
 
@@ -186,6 +187,62 @@
 .feature i {
     color: var(--primary-blue);
     width: 20px;
+}
+
+/* CTA row + Button styles for \"Trò chuyện ngay\" */
+.cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.btn {
+    padding: 12px 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, #FF6B9D, #FF8E9B);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(255, 107, 157, 0.35);
+}
+
+.btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(255, 107, 157, 0.45);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
 }
 
 /* Premium Decorative Elements */
@@ -1276,6 +1333,14 @@
     .story-writer {
         padding: 20px;
     }
+}
+
+/* ElevenLabs ConvAI Widget Styling */
+elevenlabs-convai {
+    --convai-widget-width: 450px !important;
+    --convai-widget-height: 600px !important;
+    --convai-widget-border-radius: 20px !important;
+    --convai-widget-box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Footer Styles (same as homepage) */

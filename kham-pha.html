@@ -44,9 +44,9 @@
                     <ul class="nav-list">
                         <li><a href="index.html" class="nav-link">Trang chủ</a></li>
                         <li><a href="tam-su.html" class="nav-link">Góc Tâm sự</a></li>
-                                <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="kham-pha.html" class="nav-link active">Hành trình Khám phá</a></li>
                         <li><a href="thu-gian.html" class="nav-link">Thư giãn</a></li>
+                        <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="#dang-nhap" class="nav-link login-btn">Đăng nhập</a></li>
                     </ul>
                 </nav>
@@ -77,7 +77,61 @@
         <section class="features-section">
             <div class="container">
                 <div class="features-content">
-                    
+                    <!-- Educational Stories Section -->
+                    <div class="stories-section fade-in">
+                        <div class="section-header">
+                            <h3><i class="fas fa-book pulse"></i> Câu chuyện Giáo dục</h3>
+                            <p>Những câu chuyện bổ ích về cảm xúc và kỹ năng sống</p>
+                        </div>
+                        
+                        <!-- Topic Cards Grid -->
+                        <div class="topic-cards-grid" id="topicCardsGrid">
+                            <div class="topic-card" data-topic="quan-ly-cam-xuc">
+                                <div class="topic-icon">💬</div>
+                                <h4 class="topic-title">Quản lý cảm xúc</h4>
+                                <p class="topic-description">Những câu chuyện giúp bạn hiểu và quản lý cảm xúc</p>
+                            </div>
+
+                            <div class="topic-card" data-topic="giao-tiep-ung-xu">
+                                <div class="topic-icon">❤️</div>
+                                <h4 class="topic-title">Giao tiếp và ứng xử</h4>
+                                <p class="topic-description">Học cách giao tiếp hiệu quả và ứng xử phù hợp</p>
+                            </div>
+
+                            <div class="topic-card" data-topic="gia-dinh">
+                                <div class="topic-icon">👨‍👩‍👧</div>
+                                <h4 class="topic-title">Gia đình</h4>
+                                <p class="topic-description">Những câu chuyện về tình cảm gia đình và mối quan hệ</p>
+                            </div>
+
+                            <div class="topic-card" data-topic="tu-duy-tich-cuc">
+                                <div class="topic-icon">🌱</div>
+                                <h4 class="topic-title">Tư duy tích cực và kiểm soát hành vi</h4>
+                                <p class="topic-description">Phát triển tư duy tích cực và kiểm soát hành vi</p>
+                            </div>
+
+                            <div class="topic-card" data-topic="su-chia-se">
+                                <div class="topic-icon">🤝</div>
+                                <h4 class="topic-title">Sự chia sẻ</h4>
+                                <p class="topic-description">Học cách chia sẻ và giúp đỡ người khác</p>
+                            </div>
+                        </div>
+
+                        <!-- Stories List (Hidden initially) -->
+                        <div class="stories-list" id="storiesList" style="display: none;">
+                            <div class="stories-header">
+                                <button class="back-to-topics-btn" id="backToTopicsBtn">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Quay lại chủ đề
+                                </button>
+                                <h3 id="storiesListTitle">Những câu chuyện trong chủ đề</h3>
+                            </div>
+                            <div class="stories-grid" id="storiesGrid">
+                                <!-- Stories will be loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Interactive Quiz Section -->
                     <div class="quiz-section slide-in-left">
                         <div class="section-header">
@@ -87,8 +141,6 @@
                         
                         <!-- Quiz Selection System -->
                         <div class="quiz-selection">
-                            <h4><i class="fas fa-book-open"></i> Chọn Bộ câu hỏi</h4>
-                            <p class="selection-subtitle">Bạn có thể chọn bất kỳ bộ câu hỏi nào để bắt đầu!</p>
                             <div class="quiz-selection-grid">
                                 <div class="quiz-selection-card" data-quiz="0">
                                     <div class="quiz-card-header">
@@ -155,10 +207,6 @@
                                     <button class="start-quiz-btn" data-quiz="4">Bắt đầu</button>
                                 </div>
                             </div>
-                            <div class="quiz-total-info">
-                                <p><strong>Tổng cộng: 5 bộ câu hỏi × 10 câu = 50 câu hỏi</strong></p>
-                                <p>Hoàn thành tất cả để đạt huy hiệu <strong>Chuyên gia Câu hỏi</strong> 🏆</p>
-                            </div>
                         </div>
                         
                         
@@ -198,7 +246,7 @@
                                 <div class="quiz-feedback" id="quizFeedback" style="display: none;">
                                     <div class="feedback-content">
                                         <div class="feedback-icon">🎉</div>
-                                        <h4>Chính xác!</h4>
+                                        <h4>Tuyệt vời! Bạn đã trả lời chính xác</h4>
                                         <p>Bạn đã hiểu rất tốt về cách xử lý cảm xúc. Hãy tiếp tục!</p>
                                     </div>
                                     <button class="next-question-btn" id="nextQuestionBtn">Câu tiếp theo</button>
@@ -207,99 +255,6 @@
                         </div>
                     </div>
 
-                    <!-- Educational Stories Section -->
-                    <div class="stories-section fade-in">
-                        <div class="section-header">
-                            <h3><i class="fas fa-book pulse"></i> Câu chuyện Giáo dục</h3>
-                            <p>Những câu chuyện bổ ích về cảm xúc và kỹ năng sống</p>
-                        </div>
-                        
-                        <div class="stories-grid">
-                            <div class="story-card flip-in-y stagger-1 hover-glow" data-story="1">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-smile"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Chú Gấu và Cảm xúc</h4>
-                                    <p>Một câu chuyện về cách chú gấu học cách quản lý cảm xúc của mình...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-
-                            <div class="story-card flip-in-y stagger-2 hover-glow" data-story="2">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-handshake"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Bạn bè và Sự chia sẻ</h4>
-                                    <p>Học cách chia sẻ cảm xúc với bạn bè một cách tích cực...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-
-                            <div class="story-card flip-in-y stagger-3 hover-glow" data-story="3">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-fist-raised"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Vượt qua Nỗi sợ</h4>
-                                    <p>Một câu chuyện về cách đối mặt và vượt qua những nỗi sợ hãi...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-
-                            <div class="story-card flip-in-y stagger-4 hover-glow" data-story="4">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Làm việc nhóm</h4>
-                                    <p>Học cách hợp tác và làm việc cùng bạn bè để đạt được mục tiêu chung...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-
-                            <div class="story-card flip-in-y stagger-5 hover-glow" data-story="5">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-lightbulb"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Sáng tạo và Tưởng tượng</h4>
-                                    <p>Khám phá sức mạnh của trí tưởng tượng và cách sáng tạo trong cuộc sống...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-
-                            <div class="story-card flip-in-y stagger-1 hover-glow" data-story="6">
-                                <div class="story-cover">
-                                    <div class="story-icon">
-                                        <i class="fas fa-seedling"></i>
-                                    </div>
-                                </div>
-                                <div class="story-content">
-                                    <h4>Trách nhiệm và Tự lập</h4>
-                                    <p>Học cách tự chăm sóc bản thân và có trách nhiệm với những việc mình làm...</p>
-                                    
-                                </div>
-                                <button class="read-story-btn">Đọc ngay</button>
-                            </div>
-                        </div>
-                    </div>
 
                     
 
@@ -397,7 +352,7 @@
                     <ul class="footer-links">
                         <li><a href="tam-su.html">Góc Tâm sự</a></li>
                         <li><a href="kham-pha.html">Hành trình Khám phá</a></li>
-                        <li><a href="thu-gian.html">Khu vực Thư giãn</a></li>
+                        <li><a href="thu-gian.html">Thư giãn</a></li>
                     </ul>
                 </div>
 

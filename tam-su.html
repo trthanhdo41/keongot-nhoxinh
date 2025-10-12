@@ -55,9 +55,9 @@
                     <ul class="nav-list">
                         <li><a href="index.html" class="nav-link">Trang chủ</a></li>
                         <li><a href="tam-su.html" class="nav-link active">Góc Tâm sự</a></li>
-                        <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="kham-pha.html" class="nav-link">Hành trình Khám phá</a></li>
                         <li><a href="thu-gian.html" class="nav-link">Thư giãn</a></li>
+                        <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="#dang-nhap" class="nav-link login-btn">Đăng nhập</a></li>
                     </ul>
                 </nav>
@@ -104,6 +104,9 @@
                                 <i class="fas fa-lock"></i>
                                 <span>Bảo mật tuyệt đối</span>
                             </div>
+                        </div>
+                        <div class="cta-row" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+                            <button class="btn primary" id="openConvaiBtn"><i class="fas fa-comments"></i> Trò chuyện ngay</button>
                         </div>
                     </div>
                 </div>
@@ -258,7 +261,7 @@
                     <ul class="footer-links">
                         <li><a href="tam-su.html">Góc Tâm sự</a></li>
                         <li><a href="kham-pha.html">Hành trình Khám phá</a></li>
-                        <li><a href="thu-gian.html">Khu vực Thư giãn</a></li>
+                        <li><a href="thu-gian.html">Thư giãn</a></li>
                     </ul>
                 </div>
 
@@ -439,6 +442,38 @@
     <!-- ElevenLabs AI Chatbot -->
     <elevenlabs-convai agent-id="agent_2801k6narm1nerbbnxxse7rm2yx0"></elevenlabs-convai>
     <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Button in card: open + focus ElevenLabs
+        const openBtn = document.getElementById('openConvaiBtn');
+        if (openBtn) {
+            openBtn.addEventListener('click', async function() {
+                try {
+                    await (window.customElements && window.customElements.whenDefined
+                        ? window.customElements.whenDefined('elevenlabs-convai')
+                        : Promise.resolve());
+                } catch(_) {}
+                const widget = document.querySelector('elevenlabs-convai');
+                if (!widget) return;
+                try { widget.setAttribute('open', 'true'); } catch(_) {}
+                try { widget.click && widget.click(); } catch(_) {}
+                const start = Date.now();
+                const tryFocus = () => {
+                    if (Date.now() - start > 5000) return;
+                    try {
+                        const shadow = widget.shadowRoot;
+                        if (shadow) {
+                            const btn = shadow.querySelector('button[autofocus], .start-button, button, [role="button"]');
+                            if (btn) { btn.focus && btn.focus(); btn.click && btn.click(); return; }
+                        }
+                    } catch(_) {}
+                    requestAnimationFrame(tryFocus);
+                };
+                requestAnimationFrame(tryFocus);
+            });
+        }
+    });
+    </script>
 
     <!-- JavaScript -->
     <script src="assets/js/auth.js"></script>

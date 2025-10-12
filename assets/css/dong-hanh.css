@@ -9,6 +9,7 @@
 .support-hero .page-title { 
     font-family: 'Patrick Hand', cursive; 
     font-size: 2.4rem; 
+    color: #FF6B9D;
 }
 
 .support-wrap { 
@@ -35,6 +36,7 @@
     font-family: 'Patrick Hand', cursive; 
     font-size: 1.4rem; 
     margin: 10px 0; 
+    color: #FF6B9D;
 }
 
 .contact-item { 

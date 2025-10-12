@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khu vực Thư giãn - Kẹo Ngọt Nhỏ Xinh</title>
+    <title>Thư giãn - Kẹo Ngọt Nhỏ Xinh</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
@@ -44,9 +44,9 @@
                     <ul class="nav-list">
                         <li><a href="index.html" class="nav-link">Trang chủ</a></li>
                         <li><a href="tam-su.html" class="nav-link">Góc Tâm sự</a></li>
-                                <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="kham-pha.html" class="nav-link">Hành trình Khám phá</a></li>
                         <li><a href="thu-gian.html" class="nav-link active">Thư giãn</a></li>
+                        <li><a href="dong-hanh.html" class="nav-link">Đồng hành cùng em</a></li>
                         <li><a href="#dang-nhap" class="nav-link login-btn">Đăng nhập</a></li>
                     </ul>
                 </nav>
@@ -67,7 +67,7 @@
         <section class="thu-gian-hero">
             <div class="container">
                 <div class="hero-content">
-                    <h2 class="page-title">Khu vực Thư giãn</h2>
+                    <h2 class="page-title">Thư giãn</h2>
                     <p class="page-subtitle">Chơi game vui nhộn và vẽ tranh sáng tạo để thư giãn sau những giờ học tập!</p>
                 </div>
             </div>
@@ -82,6 +82,7 @@
                     <div class="relax-tabs">
                         <button class="relax-tab-btn active" data-target="#relaxGames">Trò chơi</button>
                         <button class="relax-tab-btn" data-target="#relaxDrawing">Vẽ tranh</button>
+                        <button class="relax-tab-btn" data-target="#relaxMusic">Nghe nhạc</button>
                     </div>
 
                     <!-- Games Section -->
@@ -236,6 +237,33 @@
                     </div>
 
                     <!-- Music Section (hidden initially) -->
+                    <div class="relax-panel" id="relaxMusic" style="display: none;">
+                        <div class="game-card">
+                            <div class="game-header">
+                                <div class="game-icon"><i class="fas fa-music"></i></div>
+                                <h3>Nghe nhạc thư giãn</h3>
+                                <p>Thưởng thức những video nhạc hay và thư giãn</p>
+                            </div>
+                            <div class="game-content">
+                                <div class="music-container">
+                                    <div class="video-player">
+                                        <video id="musicPlayer" width="100%" height="400" controls style="border-radius:12px;background:#000">
+                                            <source src="assets/video/Hát_Gọi tên cảm xúc.mp4" type="video/mp4">
+                                            Trình duyệt của bạn không hỗ trợ phát video.
+                                        </video>
+                                    </div>
+                                    <div class="video-list">
+                                        <h4>Chọn video nhạc:</h4>
+                                        <div class="video-buttons">
+                                            <button class="video-btn active" data-src="assets/video/Hát_Gọi tên cảm xúc.mp4">🎵 Gọi tên cảm xúc</button>
+                                            <button class="video-btn" data-src="assets/video/Hành Trình Của Lá.mp4">🍃 Hành trình của lá</button>
+                                            <button class="video-btn" data-src="assets/video/Sống Như Những Đóa Hoa - Bé Mỹ AnhLyrics.mp4">🌸 Sống như những đóa hoa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -259,7 +287,7 @@
                     <ul class="footer-links">
                         <li><a href="tam-su.html">Góc Tâm sự</a></li>
                         <li><a href="kham-pha.html">Hành trình Khám phá</a></li>
-                        <li><a href="thu-gian.html">Khu vực Thư giãn</a></li>
+                        <li><a href="thu-gian.html">Thư giãn</a></li>
                     </ul>
                 </div>
 
@@ -448,22 +476,31 @@
     document.addEventListener('DOMContentLoaded', function(){
         const buttons = document.querySelectorAll('.relax-tab-btn');
         const panels = document.querySelectorAll('.relax-panel');
-        const audio = document.getElementById('audioPlayer');
-        document.querySelectorAll('.track-btn').forEach(btn => {
+        const video = document.getElementById('musicPlayer');
+        
+        // Handle video buttons
+        document.querySelectorAll('.video-btn').forEach(btn => {
             btn.addEventListener('click', ()=>{
+                // Remove active class from all buttons
+                document.querySelectorAll('.video-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
                 const src = btn.getAttribute('data-src');
-                if (audio && src) {
-                    audio.pause();
-                    audio.src = src;
-                    audio.load();
-                    audio.play().catch(error => {
-                        console.log('Audio playback failed:', error);
+                if (video && src) {
+                    video.pause();
+                    video.src = src;
+                    video.load();
+                    video.play().catch(error => {
+                        console.log('Video playback failed:', error);
                         // Show user-friendly message
-                        alert('Không thể phát nhạc. Vui lòng kiểm tra file âm thanh.');
+                        alert('Không thể phát video. Vui lòng kiểm tra file video.');
                     });
                 }
             });
         });
+        
+        // Handle tab buttons
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 // active state

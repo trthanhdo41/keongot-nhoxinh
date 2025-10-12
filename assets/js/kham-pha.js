@@ -1184,6 +1184,12 @@ function setupQuestionSetEventListeners() {
             const selectedAnswer = selectedOption.getAttribute('data-answer');
             const correctAnswer = String.fromCharCode(65 + quizData[currentQuestion].correct);
             
+            // Debug logging
+            console.log('Question:', quizData[currentQuestion].question);
+            console.log('Correct index:', quizData[currentQuestion].correct);
+            console.log('Correct answer:', correctAnswer);
+            console.log('Selected answer:', selectedAnswer);
+            
             // Disable all options
             document.querySelectorAll('.quiz-option').forEach(option => {
                 option.disabled = true;
@@ -1200,7 +1206,7 @@ function setupQuestionSetEventListeners() {
                 score++;
                 feedbackContent.innerHTML = `
                     <div class="feedback-icon">🎉</div>
-                    <h4>Chính xác!</h4>
+                    <h4>Tuyệt vời! Bạn đã trả lời chính xác</h4>
                     <p>${quizData[currentQuestion].explanation}</p>
                 `;
 
@@ -1210,7 +1216,7 @@ function setupQuestionSetEventListeners() {
             } else {
                 feedbackContent.innerHTML = `
                     <div class="feedback-icon">💡</div>
-                    <h4>Chưa đúng!</h4>
+                    <h4>Bạn đã cố gắng rồi, mình thử suy nghĩ thêm chút nữa nhé!</h4>
                     <p>${quizData[currentQuestion].explanation}</p>
                 `;
             }
@@ -1326,7 +1332,7 @@ function nextQuestionSet() {
             <div class="quiz-feedback" id="quizFeedback" style="display: none;">
                 <div class="feedback-content">
                     <div class="feedback-icon">🎉</div>
-                    <h4>Chính xác!</h4>
+                    <h4>Tuyệt vời! Bạn đã trả lời chính xác</h4>
                     <p>Bạn đã hiểu rất tốt về cách xử lý cảm xúc. Hãy tiếp tục!</p>
                 </div>
                 <button class="next-question-btn" id="nextQuestionBtn">Câu tiếp theo</button>
@@ -1436,7 +1442,7 @@ function restartQuestionSet() {
             <div class="quiz-feedback" id="quizFeedback" style="display: none;">
                 <div class="feedback-content">
                     <div class="feedback-icon">🎉</div>
-                    <h4>Chính xác!</h4>
+                    <h4>Tuyệt vời! Bạn đã trả lời chính xác</h4>
                     <p>Bạn đã hiểu rất tốt về cách xử lý cảm xúc. Hãy tiếp tục!</p>
                 </div>
                 <button class="next-question-btn" id="nextQuestionBtn">Câu tiếp theo</button>
@@ -1717,6 +1723,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize interactive features
     initStories();
     initQuestionSetStart();
+    initTopics();
+    initTopicCards();
     
     console.log('Kham Pha page initialized successfully!');
     console.log('Quiz selection cards found:', document.querySelectorAll('.quiz-selection-card .start-quiz-btn').length);
@@ -1788,6 +1796,928 @@ function initQuestionSetStart() {
         // Initialize question set
         console.log('Initializing question set...');
         initQuestionSet();
+    }
+}
+
+// Topic Cards System
+function initTopicCards() {
+    const topicCards = document.querySelectorAll('.topic-card');
+    const topicCardsGrid = document.getElementById('topicCardsGrid');
+    const storiesList = document.getElementById('storiesList');
+    const backToTopicsBtn = document.getElementById('backToTopicsBtn');
+    
+    // Topic data mapping
+    const topicData = {
+        'quan-ly-cam-xuc': {
+            title: 'Quản lý cảm xúc',
+            stories: [
+                {
+                    id: '1',
+                    title: 'Chú Gấu và Cảm xúc',
+                    description: 'Một câu chuyện về cách chú gấu học cách quản lý cảm xúc của mình',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chú Gấu và Cảm xúc</h3>
+                            <div class="story-text">
+                                <p>Ngày xửa ngày xưa, có một chú gấu tên là Boo sống trong rừng xanh. Boo rất hay thay đổi cảm xúc - khi thì vui vẻ nhảy nhót, khi thì buồn bã ngồi một góc.</p>
+                                
+                                <p>Một ngày nọ, Boo cảm thấy rất tức giận vì không tìm được mật ong. Chú gấu đã đập phá tổ ong và làm tổn thương những chú ong nhỏ. Những chú ong bay đi hết, và Boo càng tức giận hơn.</p>
+                                
+                                <p>Bà gấu già thông thái đã dạy Boo: "Con ơi, cảm xúc là điều tự nhiên, nhưng con cần học cách quản lý chúng. Khi tức giận, hãy hít thở sâu và nghĩ về hậu quả trước khi hành động."</p>
+                                
+                                <p>Boo học được cách hít thở sâu, đếm từ 1 đến 10, và nghĩ về những điều tốt đẹp. Chú gấu cũng học cách chia sẻ cảm xúc với bạn bè thay vì giữ trong lòng.</p>
+                                
+                                <p>Một ngày khác, Boo cảm thấy buồn vì mất bạn. Thay vì khóc một mình, chú gấu đã tìm đến bà gấu già để chia sẻ. Bà gấu đã dạy Boo rằng: "Buồn là cảm xúc bình thường, nhưng con không nên để nó kéo dài quá lâu. Hãy tìm những hoạt động vui vẻ để làm."</p>
+                                
+                                <p>Boo bắt đầu vẽ tranh, chơi với bạn bè, và giúp đỡ những con vật khác trong rừng. Chú gấu nhận ra rằng khi giúp đỡ người khác, mình cũng cảm thấy vui vẻ hơn.</p>
+                                
+                                <p>Từ đó, Boo học được cách kiểm soát cảm xúc và trở thành một chú gấu tốt bụng, được mọi người yêu quý. Chú gấu cũng dạy lại những bài học này cho các bạn nhỏ khác trong rừng.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Cảm xúc là bình thường, nhưng chúng ta cần học cách quản lý chúng một cách tích cực. Hãy chia sẻ cảm xúc với người thân và tìm những hoạt động vui vẻ để làm khi buồn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '6',
+                    title: 'Cô Bé và Cơn Giận',
+                    description: 'Học cách kiểm soát cơn giận và tìm cách giải tỏa cảm xúc tích cực',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Cô Bé và Cơn Giận</h3>
+                            <div class="story-text">
+                                <p>Minh là một cô bé 9 tuổi rất hay nóng giận. Mỗi khi có chuyện không vừa ý, cô bé thường la hét, đập phá đồ đạc và khóc lóc rất lâu.</p>
+                                
+                                <p>Một ngày, Minh bị điểm kém môn toán và cảm thấy rất tức giận. Cô bé đã ném sách vở khắp phòng và la hét: "Tại sao mình lại kém thế này! Mình ghét toán!"</p>
+                                
+                                <p>Mẹ Minh đã ngồi xuống bên cạnh và nói: "Con ơi, mẹ hiểu con đang tức giận. Nhưng việc la hét và đập phá không giúp con cảm thấy tốt hơn. Hãy thử cách khác nhé."</p>
+                                
+                                <p>Mẹ đã dạy Minh cách "Hộp Cảm xúc": "Khi con cảm thấy tức giận, hãy viết hoặc vẽ những gì con đang cảm thấy vào một tờ giấy, sau đó bỏ vào hộp này. Điều này sẽ giúp con giải tỏa cảm xúc."</p>
+                                
+                                <p>Minh bắt đầu thử cách này. Mỗi khi tức giận, cô bé viết ra những gì mình cảm thấy và bỏ vào hộp. Dần dần, cô bé nhận ra rằng việc viết ra giúp mình bình tĩnh hơn.</p>
+                                
+                                <p>Một lần, Minh tức giận vì bạn bè không chơi với mình. Thay vì la hét, cô bé đã viết: "Mình cảm thấy buồn và tức giận vì các bạn không chơi với mình. Mình muốn được chơi cùng."</p>
+                                
+                                <p>Sau khi viết xong, Minh cảm thấy nhẹ nhõm hơn và có thể suy nghĩ rõ ràng hơn. Cô bé đã đến nói chuyện với các bạn một cách bình tĩnh và cuối cùng được chơi cùng.</p>
+                                
+                                <p>Từ đó, Minh học được cách kiểm soát cơn giận và trở thành một cô bé bình tĩnh, được mọi người yêu quý hơn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Khi tức giận, hãy tìm cách giải tỏa cảm xúc một cách tích cực như viết, vẽ, hoặc hít thở sâu. Điều này giúp chúng ta bình tĩnh và suy nghĩ rõ ràng hơn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '7',
+                    title: 'Chú Thỏ và Nỗi Lo',
+                    description: 'Học cách đối phó với lo lắng và tìm sự bình yên trong tâm hồn',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chú Thỏ và Nỗi Lo</h3>
+                            <div class="story-text">
+                                <p>Thỏ Con là một chú thỏ nhỏ rất hay lo lắng. Chú lo lắng về mọi thứ: lo trời mưa, lo không có cà rốt ăn, lo bạn bè không thích mình, lo không học được bài mới.</p>
+                                
+                                <p>Một ngày, Thỏ Con lo lắng quá mức đến nỗi không thể ngủ được. Chú cứ nghĩ mãi về những điều có thể xảy ra ngày mai và cảm thấy rất mệt mỏi.</p>
+                                
+                                <p>Bà Thỏ già thông thái đã dạy Thỏ Con: "Con ơi, lo lắng là cảm xúc bình thường, nhưng khi con lo lắng quá nhiều, nó sẽ làm con mệt mỏi. Hãy học cách kiểm soát nó."</p>
+                                
+                                <p>Bà Thỏ đã dạy Thỏ Con bài tập "Thở bụng": "Hãy đặt tay lên bụng, hít vào từ từ và cảm nhận bụng phình ra. Sau đó thở ra từ từ và cảm nhận bụng xẹp xuống. Làm như vậy 5 lần."</p>
+                                
+                                <p>Thỏ Con bắt đầu thực hành bài tập này mỗi khi cảm thấy lo lắng. Chú nhận ra rằng việc thở sâu giúp mình bình tĩnh hơn và có thể suy nghĩ rõ ràng hơn.</p>
+                                
+                                <p>Bà Thỏ cũng dạy Thỏ Con cách "Chia nhỏ vấn đề": "Khi con lo lắng về một việc lớn, hãy chia nó thành những việc nhỏ hơn và giải quyết từng việc một."</p>
+                                
+                                <p>Một lần, Thỏ Con lo lắng về kỳ thi sắp tới. Thay vì lo lắng về toàn bộ kỳ thi, chú đã chia nhỏ: "Hôm nay mình sẽ ôn bài toán, ngày mai ôn bài văn, ngày kia ôn bài khoa học."</p>
+                                
+                                <p>Dần dần, Thỏ Con học được cách kiểm soát lo lắng và trở thành một chú thỏ tự tin, vui vẻ hơn rất nhiều.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Khi lo lắng, hãy thở sâu và chia nhỏ vấn đề để giải quyết. Điều này giúp chúng ta bình tĩnh và có thể xử lý mọi việc một cách hiệu quả.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '8',
+                    title: 'Cậu Bé và Niềm Vui',
+                    description: 'Học cách tìm niềm vui trong những điều nhỏ bé và lan tỏa hạnh phúc',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Cậu Bé và Niềm Vui</h3>
+                            <div class="story-text">
+                                <p>Nam là một cậu bé 8 tuổi rất hay buồn bã. Cậu thường cảm thấy không có gì vui vẻ và luôn nhìn mọi thứ một cách tiêu cực.</p>
+                                
+                                <p>Một ngày, cô giáo đã dạy Nam về "Lọ Niềm Vui": "Mỗi ngày, hãy viết ra một điều làm con vui vẻ và bỏ vào lọ này. Cuối tuần, con sẽ đọc lại và cảm thấy hạnh phúc."</p>
+                                
+                                <p>Ban đầu, Nam cảm thấy khó khăn vì không tìm thấy gì vui vẻ. Nhưng cô giáo đã gợi ý: "Có thể là một bông hoa đẹp con nhìn thấy, một món ăn ngon, hoặc một lời khen của ai đó."</p>
+                                
+                                <p>Ngày đầu tiên, Nam viết: "Hôm nay mẹ nấu món canh chua mà con thích." Ngày thứ hai: "Bạn Lan cho con mượn bút chì màu." Ngày thứ ba: "Con thấy một chú mèo con dễ thương."</p>
+                                
+                                <p>Dần dần, Nam bắt đầu chú ý đến những điều tích cực xung quanh mình. Cậu nhận ra rằng có rất nhiều điều nhỏ bé nhưng đáng yêu trong cuộc sống.</p>
+                                
+                                <p>Một ngày, Nam thấy bạn Minh buồn vì bị điểm kém. Thay vì bỏ qua, cậu đã đến an ủi: "Đừng buồn, lần sau mình sẽ giúp bạn học bài nhé." Minh cảm thấy rất vui vì được bạn quan tâm.</p>
+                                
+                                <p>Nam nhận ra rằng khi giúp đỡ người khác, mình cũng cảm thấy vui vẻ hơn. Cậu bắt đầu chủ động giúp đỡ bạn bè và lan tỏa niềm vui cho mọi người.</p>
+                                
+                                <p>Cuối tuần, khi đọc lại những điều vui vẻ trong lọ, Nam cảm thấy rất hạnh phúc. Cậu hiểu rằng hạnh phúc không phải là những điều lớn lao mà là những khoảnh khắc nhỏ bé, ý nghĩa trong cuộc sống.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Hãy chú ý đến những điều tích cực và nhỏ bé xung quanh mình. Khi chúng ta lan tỏa niềm vui cho người khác, chúng ta cũng sẽ cảm thấy hạnh phúc hơn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '9',
+                    title: 'Cô Gái và Sự Tự Tin',
+                    description: 'Học cách xây dựng lòng tự tin và đối mặt với nỗi sợ hãi',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Cô Gái và Sự Tự Tin</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé 10 tuổi rất nhút nhát và thiếu tự tin. Cô bé luôn sợ phát biểu trước lớp, sợ tham gia các hoạt động tập thể, và luôn nghĩ rằng mình không giỏi bằng các bạn khác.</p>
+                                
+                                <p>Một ngày, cô giáo gọi Hoa lên bảng giải bài toán. Hoa run rẩy và không dám nhìn lên. Cô bé nói nhỏ: "Em... em không biết làm."</p>
+                                
+                                <p>Cô giáo đã ngồi xuống bên cạnh Hoa và nói: "Con ơi, cô tin con có thể làm được. Hãy thử từng bước một, cô sẽ giúp con."</p>
+                                
+                                <p>Cô giáo đã dạy Hoa cách "Thở tự tin": "Trước khi làm bất cứ việc gì, hãy hít thở sâu và nói với bản thân: 'Mình có thể làm được!'"</p>
+                                
+                                <p>Hoa bắt đầu thực hành cách này. Mỗi khi cảm thấy sợ hãi, cô bé hít thở sâu và tự nhủ: "Mình có thể làm được!"</p>
+                                
+                                <p>Cô giáo cũng dạy Hoa cách "Chia nhỏ mục tiêu": "Thay vì nghĩ về việc phát biểu trước cả lớp, hãy bắt đầu bằng việc giơ tay trả lời câu hỏi đơn giản."</p>
+                                
+                                <p>Hoa bắt đầu thử giơ tay trả lời những câu hỏi dễ. Mỗi lần được cô giáo khen, cô bé cảm thấy tự tin hơn một chút.</p>
+                                
+                                <p>Một ngày, Hoa được chọn làm nhóm trưởng cho dự án khoa học. Ban đầu cô bé rất sợ, nhưng nhớ lại những gì cô giáo dạy, cô bé đã hít thở sâu và nhận lời.</p>
+                                
+                                <p>Hoa đã dẫn dắt nhóm một cách xuất sắc và dự án của nhóm đạt giải nhất. Cô bé nhận ra rằng mình có thể làm được nhiều điều hơn mình nghĩ.</p>
+                                
+                                <p>Từ đó, Hoa trở thành một cô bé tự tin, dám thử những điều mới và luôn tin tưởng vào khả năng của bản thân.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Hãy tin tưởng vào khả năng của bản thân và bắt đầu từ những việc nhỏ. Mỗi bước tiến bộ sẽ giúp chúng ta tự tin hơn và dám thử những điều mới.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                }
+            ]
+        },
+        'giao-tiep-ung-xu': {
+            title: 'Giao tiếp và ứng xử',
+            stories: [
+                {
+                    id: '2',
+                    title: 'Bạn bè và Sự chia sẻ',
+                    description: 'Học cách chia sẻ cảm xúc với bạn bè một cách tích cực',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Bạn bè và Sự chia sẻ</h3>
+                            <div class="story-text">
+                                <p>Minh và Lan là hai người bạn thân từ nhỏ. Họ luôn chơi cùng nhau, học cùng nhau, và chia sẻ mọi thứ với nhau.</p>
+                                
+                                <p>Một ngày, Lan cảm thấy rất buồn vì bị điểm kém trong bài kiểm tra toán. Lan sợ bố mẹ sẽ thất vọng và bạn bè sẽ cười chê. Cô bé đã khóc một mình trong phòng.</p>
+                                
+                                <p>Minh đến nhà Lan và thấy bạn đang buồn. Thay vì hỏi ngay, Minh đã ngồi bên cạnh Lan và hỏi: "Bạn có muốn chia sẻ với mình không? Mình sẽ lắng nghe."</p>
+                                
+                                <p>Lan đã kể cho Minh nghe về nỗi buồn của mình. Minh không chỉ lắng nghe mà còn động viên: "Điểm kém không có nghĩa là bạn kém thông minh. Có thể bạn chỉ cần học cách khác thôi. Mình sẽ giúp bạn học toán nhé!"</p>
+                                
+                                <p>Từ đó, Minh và Lan học cùng nhau mỗi ngày. Minh dạy Lan cách giải toán dễ hiểu hơn, và Lan cũng giúp Minh học tiếng Anh. Cả hai đều tiến bộ rất nhiều.</p>
+                                
+                                <p>Một lần khác, Minh cảm thấy lo lắng vì sắp thi học kỳ. Lan đã an ủi: "Bạn đã học rất chăm chỉ rồi, mình tin bạn sẽ làm tốt. Nếu bạn lo lắng, hãy hít thở sâu và nghĩ về những điều tích cực."</p>
+                                
+                                <p>Nhờ sự chia sẻ và hỗ trợ lẫn nhau, cả hai đã vượt qua nhiều khó khăn và trở nên thân thiết hơn. Họ học được rằng tình bạn thật sự là khi có thể chia sẻ cả niềm vui và nỗi buồn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Chia sẻ cảm xúc với bạn bè không chỉ giúp chúng ta cảm thấy tốt hơn mà còn làm tình bạn thêm gắn bó. Hãy lắng nghe và hỗ trợ bạn bè khi họ cần.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '10',
+                    title: 'Lời Xin Lỗi Chân Thành',
+                    description: 'Học cách xin lỗi và tha thứ một cách chân thành',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Lời Xin Lỗi Chân Thành</h3>
+                            <div class="story-text">
+                                <p>Hoa và Minh là hai bạn cùng lớp rất thân thiết. Một ngày, trong lúc chơi đá bóng, Hoa vô tình làm Minh ngã và bị trầy xước tay.</p>
+                                
+                                <p>Minh rất tức giận và nói: "Bạn cố ý làm mình ngã! Mình không chơi với bạn nữa!" Hoa cảm thấy rất buồn và không biết phải làm gì.</p>
+                                
+                                <p>Về nhà, mẹ Hoa thấy con buồn bã và hỏi chuyện. Hoa kể lại sự việc và mẹ đã dạy: "Khi làm sai, con cần xin lỗi chân thành. Hãy nói rõ lỗi của mình và hứa sẽ cẩn thận hơn."</p>
+                                
+                                <p>Hôm sau, Hoa đến gặp Minh và nói: "Minh ơi, mình xin lỗi vì đã làm bạn ngã. Mình không cố ý, nhưng mình đã không cẩn thận. Mình hứa sẽ chơi cẩn thận hơn. Bạn có thể tha thứ cho mình không?"</p>
+                                
+                                <p>Minh nhìn thấy sự chân thành trong lời xin lỗi của Hoa và nói: "Mình tha thứ cho bạn. Mình cũng xin lỗi vì đã nói nặng lời. Chúng ta vẫn là bạn nhé!"</p>
+                                
+                                <p>Từ đó, hai bạn hiểu rằng xin lỗi chân thành và tha thứ là điều quan trọng trong tình bạn. Họ trở nên thân thiết hơn và luôn cẩn thận khi chơi cùng nhau.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Khi làm sai, hãy xin lỗi chân thành và hứa sẽ cẩn thận hơn. Tha thứ cho người khác cũng giúp chúng ta cảm thấy tốt hơn và giữ được tình bạn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '11',
+                    title: 'Lắng Nghe Tích Cực',
+                    description: 'Học cách lắng nghe và hiểu cảm xúc của người khác',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Lắng Nghe Tích Cực</h3>
+                            <div class="story-text">
+                                <p>Nam là một cậu bé rất hay nói và ít khi lắng nghe người khác. Khi bạn bè kể chuyện, cậu thường ngắt lời hoặc chỉ nghĩ về câu chuyện của mình.</p>
+                                
+                                <p>Một ngày, bạn Lan đến tìm Nam và muốn chia sẻ về việc em trai bị ốm. Nhưng Nam cứ nói về trò chơi mới của mình mà không để ý đến cảm xúc của Lan.</p>
+                                
+                                <p>Lan cảm thấy buồn và bỏ đi. Nam nhận ra rằng mình đã không lắng nghe bạn và cảm thấy có lỗi.</p>
+                                
+                                <p>Cô giáo đã dạy Nam về "Lắng nghe tích cực": "Khi ai đó nói chuyện với con, hãy nhìn vào mắt họ, gật đầu, và đặt câu hỏi để hiểu rõ hơn. Đừng ngắt lời và hãy quan tâm đến cảm xúc của họ."</p>
+                                
+                                <p>Nam bắt đầu thực hành cách lắng nghe tích cực. Khi Lan quay lại, cậu đã ngồi xuống, nhìn vào mắt Lan và nói: "Mình xin lỗi vì đã không lắng nghe bạn. Bạn kể cho mình nghe về em trai nhé."</p>
+                                
+                                <p>Lan cảm thấy được quan tâm và kể cho Nam nghe về nỗi lo lắng của mình. Nam lắng nghe chăm chú và an ủi Lan. Từ đó, Lan cảm thấy gần gũi với Nam hơn.</p>
+                                
+                                <p>Nam học được rằng lắng nghe tích cực không chỉ giúp hiểu người khác mà còn làm cho họ cảm thấy được quan tâm và yêu thương.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Lắng nghe tích cực là kỹ năng quan trọng trong giao tiếp. Hãy nhìn vào mắt người nói, gật đầu, và đặt câu hỏi để hiểu rõ hơn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '12',
+                    title: 'Giải Quyết Xung Đột',
+                    description: 'Học cách giải quyết mâu thuẫn một cách hòa bình',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Giải Quyết Xung Đột</h3>
+                            <div class="story-text">
+                                <p>Minh và Hoa cùng muốn chơi với chiếc xe đạp mới của Lan. Cả hai đều tranh giành và cãi nhau, làm Lan cảm thấy khó xử.</p>
+                                
+                                <p>Lan đã dừng lại và nói: "Các bạn ơi, cãi nhau không giải quyết được gì cả. Hãy cùng tìm cách chia sẻ nhé."</p>
+                                
+                                <p>Lan đã dạy các bạn cách "Giải quyết xung đột": "Đầu tiên, mỗi người hãy nói về cảm xúc của mình. Sau đó, cùng tìm giải pháp mà ai cũng hài lòng."</p>
+                                
+                                <p>Minh nói: "Mình cảm thấy buồn vì muốn chơi xe đạp trước." Hoa nói: "Mình cũng muốn chơi và cảm thấy không công bằng."</p>
+                                
+                                <p>Lan gợi ý: "Chúng ta có thể chia thời gian chơi. Minh chơi 10 phút trước, sau đó đến lượt Hoa. Như vậy ai cũng được chơi."</p>
+                                
+                                <p>Cả hai đồng ý với giải pháp này. Minh chơi xe đạp trước, sau đó đến lượt Hoa. Cả hai đều vui vẻ và không còn cãi nhau nữa.</p>
+                                
+                                <p>Từ đó, ba bạn học được cách giải quyết xung đột một cách hòa bình và luôn tìm cách chia sẻ với nhau.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Khi có xung đột, hãy dừng lại, lắng nghe cảm xúc của nhau, và cùng tìm giải pháp hòa bình. Chia sẻ và thỏa hiệp là chìa khóa của tình bạn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '13',
+                    title: 'Lời Khen Chân Thành',
+                    description: 'Học cách khen ngợi và khuyến khích người khác',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Lời Khen Chân Thành</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé rất giỏi vẽ nhưng lại nhút nhát và không dám chia sẻ tác phẩm của mình. Cô bé luôn nghĩ rằng tranh của mình không đẹp.</p>
+                                
+                                <p>Một ngày, Lan tình cờ thấy Hoa vẽ và nói: "Ôi, tranh của bạn đẹp quá! Mình thích cách bạn phối màu này. Bạn vẽ giỏi thật đấy!"</p>
+                                
+                                <p>Hoa cảm thấy rất vui vì lời khen của Lan. Cô bé nói: "Thật không? Mình cứ nghĩ tranh mình không đẹp."</p>
+                                
+                                <p>Lan đã dạy Hoa về "Lời khen chân thành": "Khi thấy ai đó làm tốt, hãy khen họ một cách cụ thể. Điều này sẽ giúp họ tự tin hơn và cảm thấy được khuyến khích."</p>
+                                
+                                <p>Từ đó, Hoa bắt đầu dám chia sẻ tranh của mình và nhận được nhiều lời khen từ bạn bè. Cô bé cũng học cách khen ngợi người khác một cách chân thành.</p>
+                                
+                                <p>Một lần, Hoa thấy Minh giải toán rất nhanh và nói: "Minh ơi, mình thích cách bạn giải bài toán này. Bạn giải rất logic và dễ hiểu!"</p>
+                                
+                                <p>Minh cảm thấy rất vui và tự tin hơn. Từ đó, cả hai đều học được rằng lời khen chân thành có thể làm thay đổi cảm xúc và động lực của người khác.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Lời khen chân thành và cụ thể có thể làm thay đổi cảm xúc của người khác. Hãy khen ngợi khi thấy ai đó làm tốt và khuyến khích họ tiếp tục cố gắng.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                }
+            ]
+        },
+        'gia-dinh': {
+            title: 'Gia đình',
+            stories: [
+                {
+                    id: '3',
+                    title: 'Tình cảm gia đình',
+                    description: 'Những câu chuyện về tình cảm gia đình và mối quan hệ',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Tình cảm gia đình</h3>
+                            <div class="story-text">
+                                <p>Minh là một cậu bé 8 tuổi, sống trong một gia đình hạnh phúc với bố mẹ và em gái. Nhưng đôi khi Minh cảm thấy bố mẹ không hiểu mình.</p>
+                                
+                                <p>Một ngày, Minh bị điểm kém và sợ bố mẹ sẽ thất vọng. Cậu đã giấu bài kiểm tra và nói dối rằng mình đã làm tốt. Nhưng bố mẹ đã phát hiện ra sự thật.</p>
+                                
+                                <p>Thay vì la mắng, bố mẹ đã ngồi xuống và nói chuyện với Minh: "Con ơi, bố mẹ yêu con không phải vì điểm số mà vì con là con của bố mẹ. Hãy thành thật với bố mẹ nhé."</p>
+                                
+                                <p>Minh đã khóc và xin lỗi bố mẹ. Từ đó, cậu luôn thành thật và chia sẻ mọi thứ với gia đình. Minh nhận ra rằng gia đình là nơi an toàn nhất để chia sẻ cảm xúc.</p>
+                                
+                                <p>Một lần khác, em gái Minh bị ốm. Minh đã chăm sóc em, đọc truyện cho em nghe, và giúp bố mẹ làm việc nhà. Cậu cảm thấy rất hạnh phúc khi được giúp đỡ gia đình.</p>
+                                
+                                <p>Từ đó, Minh hiểu rằng gia đình là nơi quan trọng nhất trong cuộc sống. Tình yêu thương và sự hỗ trợ của gia đình giúp cậu vượt qua mọi khó khăn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Gia đình là nơi an toàn nhất để chia sẻ cảm xúc và tìm kiếm sự hỗ trợ. Hãy thành thật và yêu thương những người thân trong gia đình.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '14',
+                    title: 'Bữa cơm gia đình',
+                    description: 'Học cách trân trọng những khoảnh khắc bên gia đình',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Bữa cơm gia đình</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé 9 tuổi rất bận rộn với việc học và chơi. Cô bé thường ăn cơm một mình hoặc vừa ăn vừa xem tivi, không chú ý đến bố mẹ.</p>
+                                
+                                <p>Một ngày, bố Hoa nói: "Con ơi, bữa cơm gia đình là lúc chúng ta cùng nhau chia sẻ về một ngày của mình. Hãy tắt tivi và cùng trò chuyện nhé."</p>
+                                
+                                <p>Hoa ban đầu cảm thấy khó chịu vì không được xem tivi. Nhưng khi nghe bố mẹ kể về công việc và em trai kể về trường học, cô bé thấy thú vị hơn nhiều.</p>
+                                
+                                <p>Từ đó, Hoa bắt đầu kể về những gì đã học ở trường, về bạn bè, và những điều thú vị trong ngày. Cả gia đình cùng cười vui vẻ và cảm thấy gần gũi hơn.</p>
+                                
+                                <p>Một lần, Hoa gặp khó khăn với bài toán khó. Thay vì giấu kín, cô bé đã chia sẻ với gia đình trong bữa cơm. Bố mẹ và em trai đã cùng giúp Hoa giải bài toán.</p>
+                                
+                                <p>Hoa nhận ra rằng bữa cơm gia đình không chỉ là ăn uống mà còn là lúc để yêu thương, chia sẻ và hỗ trợ lẫn nhau. Đó là khoảnh khắc quý giá nhất trong ngày.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Bữa cơm gia đình là thời gian quý giá để cùng nhau chia sẻ và yêu thương. Hãy trân trọng những khoảnh khắc bên gia đình.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '15',
+                    title: 'Em trai và Tình anh em',
+                    description: 'Học cách yêu thương và chăm sóc em trai',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Em trai và Tình anh em</h3>
+                            <div class="story-text">
+                                <p>Nam là một cậu bé 10 tuổi có em trai 6 tuổi tên là Minh. Nam thường cảm thấy em trai làm phiền mình và không muốn chơi cùng.</p>
+                                
+                                <p>Một ngày, Minh bị ngã và khóc. Nam thấy em trai đau đớn nhưng không biết phải làm gì. Mẹ đã dạy Nam: "Em trai cần sự quan tâm và yêu thương của anh. Hãy chăm sóc em như cách bố mẹ chăm sóc con."</p>
+                                
+                                <p>Nam bắt đầu chú ý đến em trai hơn. Cậu dạy Minh chơi cờ, đọc truyện cho em nghe, và giúp em làm bài tập. Minh rất vui vì được anh quan tâm.</p>
+                                
+                                <p>Một lần, Minh bị bạn bè trêu chọc ở trường. Nam đã đến bảo vệ em và dạy Minh cách đối phó với tình huống này. Minh cảm thấy rất an toàn khi có anh bên cạnh.</p>
+                                
+                                <p>Từ đó, Nam và Minh trở thành những người bạn thân thiết. Nam nhận ra rằng tình anh em là món quà quý giá nhất mà bố mẹ đã tặng cho mình.</p>
+                                
+                                <p>Nam học được rằng làm anh trai không chỉ là trách nhiệm mà còn là niềm hạnh phúc khi được yêu thương và bảo vệ em trai.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Tình anh em là món quà quý giá. Hãy yêu thương, chăm sóc và bảo vệ em trai/em gái của mình.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '16',
+                    title: 'Bố mẹ và Công việc',
+                    description: 'Hiểu và cảm thông với công việc của bố mẹ',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Bố mẹ và Công việc</h3>
+                            <div class="story-text">
+                                <p>Lan là một cô bé 8 tuổi thường cảm thấy buồn vì bố mẹ đi làm cả ngày và ít thời gian chơi với mình. Cô bé nghĩ rằng bố mẹ không yêu mình.</p>
+                                
+                                <p>Một ngày, Lan hỏi mẹ: "Tại sao bố mẹ phải đi làm cả ngày? Tại sao không ở nhà chơi với con?" Mẹ đã giải thích: "Bố mẹ đi làm để kiếm tiền mua thức ăn, quần áo, và đồ chơi cho con. Đó là cách bố mẹ thể hiện tình yêu với con."</p>
+                                
+                                <p>Lan bắt đầu quan sát bố mẹ làm việc ở nhà. Cô bé thấy bố phải làm việc trên máy tính đến khuya, mẹ phải nấu ăn và dọn dẹp nhà cửa. Lan hiểu rằng bố mẹ rất vất vả.</p>
+                                
+                                <p>Từ đó, Lan bắt đầu giúp đỡ bố mẹ: dọn dẹp phòng, rửa bát, và học bài chăm chỉ. Cô bé cũng không quấy rầy khi bố mẹ đang làm việc.</p>
+                                
+                                <p>Một ngày, Lan thấy bố mẹ rất mệt mỏi sau giờ làm việc. Cô bé đã pha trà cho bố mẹ và massage vai cho họ. Bố mẹ cảm thấy rất hạnh phúc và tự hào về Lan.</p>
+                                
+                                <p>Lan học được rằng tình yêu không chỉ thể hiện qua việc chơi cùng nhau mà còn qua sự hiểu biết, cảm thông và giúp đỡ lẫn nhau trong gia đình.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Hãy hiểu và cảm thông với công việc của bố mẹ. Tình yêu được thể hiện qua sự quan tâm và giúp đỡ lẫn nhau.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '17',
+                    title: 'Ông bà và Tình yêu thương',
+                    description: 'Học cách yêu thương và kính trọng ông bà',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Ông bà và Tình yêu thương</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé 9 tuổi sống cùng ông bà nội. Cô bé thường cảm thấy khó chịu vì ông bà hay nhắc nhở và không hiểu những gì mình thích.</p>
+                                
+                                <p>Một ngày, Hoa thấy ông bà rất buồn vì không biết sử dụng điện thoại thông minh để gọi video cho con cháu ở xa. Cô bé đã dạy ông bà cách sử dụng.</p>
+                                
+                                <p>Khi thấy ông bà vui vẻ gọi video cho các cô chú, Hoa cảm thấy rất hạnh phúc. Cô bé nhận ra rằng ông bà cũng cần sự giúp đỡ và quan tâm.</p>
+                                
+                                <p>Từ đó, Hoa bắt đầu dành thời gian cho ông bà: nghe ông kể chuyện xưa, giúp bà nấu ăn, và chơi cờ với ông. Ông bà rất vui vì được cháu quan tâm.</p>
+                                
+                                <p>Một lần, ông bà ốm, Hoa đã chăm sóc họ: đưa thuốc, nấu cháo, và đọc báo cho ông bà nghe. Ông bà cảm động và nói: "Cháu ngoan quá, ông bà yêu cháu lắm!"</p>
+                                
+                                <p>Hoa học được rằng ông bà là kho báu quý giá của gia đình. Tình yêu thương và sự kính trọng dành cho ông bà sẽ được truyền lại cho thế hệ sau.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Ông bà là kho báu quý giá của gia đình. Hãy yêu thương, kính trọng và chăm sóc ông bà với tất cả tình cảm.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                }
+            ]
+        },
+        'tu-duy-tich-cuc': {
+            title: 'Tư duy tích cực và kiểm soát hành vi',
+            stories: [
+                {
+                    id: '4',
+                    title: 'Vượt qua Nỗi sợ',
+                    description: 'Một câu chuyện về cách đối mặt và vượt qua những nỗi sợ hãi',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Vượt qua Nỗi sợ</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé rất sợ bóng tối. Mỗi khi trời tối, cô bé thường khóc và gọi mẹ. Hoa sợ rằng trong bóng tối có những con quái vật đang ẩn nấp.</p>
+                                
+                                <p>Một ngày, mẹ đã dạy Hoa cách đối mặt với nỗi sợ: "Con ơi, sợ hãi là cảm xúc bình thường. Nhưng thay vì trốn tránh, con hãy thử hiểu nỗi sợ của mình. Bóng tối không có gì đáng sợ cả, nó chỉ là không có ánh sáng thôi."</p>
+                                
+                                <p>Mẹ đã dạy Hoa cách thở sâu và đếm từ 1 đến 10 khi cảm thấy sợ. Mẹ cũng dạy Hoa tưởng tượng về những điều tích cực, như những ngôi sao lấp lánh trên bầu trời đêm.</p>
+                                
+                                <p>Hoa bắt đầu thử ngủ một mình với đèn ngủ nhỏ. Cô bé học cách thở sâu và nghĩ về những điều vui vẻ. Dần dần, Hoa nhận ra rằng bóng tối không đáng sợ như cô bé nghĩ.</p>
+                                
+                                <p>Một đêm, Hoa nghe thấy tiếng động trong phòng. Thay vì sợ hãi, cô bé đã thở sâu và kiểm tra xem đó là gì. Hóa ra đó chỉ là tiếng gió thổi qua cửa sổ. Hoa cảm thấy rất tự hào vì đã vượt qua nỗi sợ.</p>
+                                
+                                <p>Từ đó, Hoa không còn sợ bóng tối nữa. Cô bé thậm chí còn thích ngắm sao vào ban đêm. Hoa học được rằng khi chúng ta đối mặt với nỗi sợ, chúng ta sẽ trở nên mạnh mẽ hơn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Chúng ta có thể học cách đối mặt và vượt qua những nỗi sợ hãi bằng cách hiểu và chấp nhận chúng. Hãy thở sâu và nghĩ về những điều tích cực khi cảm thấy sợ.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '18',
+                    title: 'Tư duy tích cực',
+                    description: 'Học cách suy nghĩ tích cực trong mọi tình huống',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Tư duy tích cực</h3>
+                            <div class="story-text">
+                                <p>Lan là một cô bé 8 tuổi thường suy nghĩ tiêu cực. Khi gặp khó khăn, cô bé thường nói: "Mình không làm được đâu", "Mình thật kém cỏi", hoặc "Mọi thứ đều tệ hại".</p>
+                                
+                                <p>Một ngày, Lan bị điểm kém môn toán. Thay vì cố gắng, cô bé nói: "Mình không giỏi toán, mình sẽ không bao giờ học được." Mẹ Lan nghe thấy và nói: "Con ơi, hãy thử suy nghĩ tích cực hơn."</p>
+                                
+                                <p>Mẹ dạy Lan cách thay đổi suy nghĩ: "Thay vì nói 'Mình không làm được', hãy nói 'Mình sẽ cố gắng'. Thay vì nói 'Mình kém cỏi', hãy nói 'Mình đang học hỏi'."</p>
+                                
+                                <p>Lan bắt đầu thực hành tư duy tích cực. Khi gặp bài toán khó, cô bé nói: "Bài này khó nhưng mình sẽ cố gắng giải." Khi bị bạn trêu chọc, cô bé nói: "Có thể họ đang vui đùa, mình sẽ không để ý."</p>
+                                
+                                <p>Dần dần, Lan nhận thấy rằng khi suy nghĩ tích cực, mọi thứ trở nên dễ dàng hơn. Cô bé học tốt hơn, có nhiều bạn bè hơn, và cảm thấy hạnh phúc hơn.</p>
+                                
+                                <p>Lan học được rằng tư duy tích cực không chỉ giúp mình vượt qua khó khăn mà còn làm cho cuộc sống trở nên tươi đẹp hơn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Tư duy tích cực giúp chúng ta vượt qua khó khăn và sống hạnh phúc hơn. Hãy luôn suy nghĩ tích cực trong mọi tình huống.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '19',
+                    title: 'Kiểm soát cơn giận',
+                    description: 'Học cách kiểm soát cơn giận một cách hiệu quả',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Kiểm soát cơn giận</h3>
+                            <div class="story-text">
+                                <p>Nam là một cậu bé 10 tuổi có tính nóng nảy. Khi tức giận, cậu thường đánh bạn, ném đồ đạc, hoặc la hét rất to. Điều này khiến Nam mất nhiều bạn bè.</p>
+                                
+                                <p>Một ngày, Nam tức giận vì bạn lấy mất bút chì của mình. Cậu đã đánh bạn và bị cô giáo phạt. Cô giáo nói: "Nam ơi, cơn giận là cảm xúc bình thường, nhưng cách con thể hiện cơn giận không đúng."</p>
+                                
+                                <p>Cô giáo dạy Nam một kỹ thuật gọi là "Dừng lại và Suy nghĩ": "Khi con cảm thấy tức giận, hãy dừng lại, hít thở sâu, và suy nghĩ về hậu quả trước khi hành động."</p>
+                                
+                                <p>Nam bắt đầu thực hành kỹ thuật này. Lần đầu, cậu vẫn nổi giận, nhưng dần dần cậu học được cách kiểm soát. Thay vì đánh bạn, cậu nói: "Tôi đang tức giận, tôi cần một chút thời gian."</p>
+                                
+                                <p>Một lần, Nam bị bạn trêu chọc. Thay vì đánh bạn, cậu đã dừng lại, hít thở sâu, và nói: "Tôi không thích cách bạn nói chuyện. Hãy dừng lại." Bạn của Nam đã xin lỗi.</p>
+                                
+                                <p>Từ đó, Nam trở thành một cậu bé biết kiểm soát cơn giận. Cậu học được rằng kiểm soát cảm xúc giúp mình có nhiều bạn bè và sống hạnh phúc hơn.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Cơn giận là cảm xúc bình thường, nhưng chúng ta cần học cách kiểm soát nó. Hãy dừng lại và suy nghĩ trước khi hành động.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '20',
+                    title: 'Tự tin và Lòng tự trọng',
+                    description: 'Học cách xây dựng lòng tự tin và tự trọng',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Tự tin và Lòng tự trọng</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé 9 tuổi rất nhút nhát và thiếu tự tin. Cô bé thường sợ phát biểu trong lớp, không dám tham gia hoạt động nhóm, và luôn nghĩ mình kém cỏi hơn các bạn.</p>
+                                
+                                <p>Một ngày, cô giáo gọi Hoa lên bảng làm bài. Hoa run rẩy và không dám nói gì. Cô giáo nói: "Hoa ơi, con có thể làm được. Hãy tin vào bản thân mình."</p>
+                                
+                                <p>Cô giáo dạy Hoa cách xây dựng lòng tự tin: "Mỗi ngày, hãy nói với bản thân: 'Mình có thể làm được', 'Mình là người đặc biệt', 'Mình xứng đáng được yêu thương'."</p>
+                                
+                                <p>Hoa bắt đầu thực hành. Cô bé đứng trước gương mỗi sáng và nói những câu tích cực về bản thân. Dần dần, cô bé cảm thấy tự tin hơn.</p>
+                                
+                                <p>Một lần, Hoa được chọn tham gia cuộc thi kể chuyện. Ban đầu cô bé rất sợ, nhưng nhớ lời cô giáo, cô bé đã tự tin kể câu chuyện và giành giải nhì.</p>
+                                
+                                <p>Từ đó, Hoa trở thành một cô bé tự tin và tích cực. Cô bé học được rằng lòng tự tin không phải là không sợ hãi, mà là tin vào khả năng của bản thân.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Lòng tự tin và tự trọng là nền tảng của thành công. Hãy tin vào khả năng của bản thân và yêu thương chính mình.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '21',
+                    title: 'Kiên trì và Không bỏ cuộc',
+                    description: 'Học cách kiên trì và không bỏ cuộc khi gặp khó khăn',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Kiên trì và Không bỏ cuộc</h3>
+                            <div class="story-text">
+                                <p>Minh là một cậu bé 8 tuổi rất dễ bỏ cuộc. Khi gặp bài tập khó, cậu thường nói: "Mình không làm được" và bỏ dở. Khi học kỹ năng mới, cậu cũng nhanh chóng từ bỏ.</p>
+                                
+                                <p>Một ngày, Minh muốn học đi xe đạp. Sau vài lần ngã, cậu nói: "Mình không thể học được, mình sẽ không bao giờ biết đi xe đạp." Bố Minh nghe thấy và nói: "Con ơi, hãy kiên trì thêm một chút nữa."</p>
+                                
+                                <p>Bố dạy Minh về sức mạnh của sự kiên trì: "Mọi thứ đều khó khăn lúc đầu, nhưng nếu con kiên trì, con sẽ thành công. Hãy thử lại từng bước một."</p>
+                                
+                                <p>Minh bắt đầu thực hành kiên trì. Cậu học đi xe đạp từng bước: giữ thăng bằng, đạp chậm, rồi tăng tốc. Sau một tuần, cậu đã biết đi xe đạp.</p>
+                                
+                                <p>Từ đó, Minh áp dụng sự kiên trì vào mọi việc: học bài, chơi thể thao, và học kỹ năng mới. Cậu nhận ra rằng kiên trì là chìa khóa của thành công.</p>
+                                
+                                <p>Minh học được rằng không có gì là không thể nếu chúng ta kiên trì và không bỏ cuộc. Mỗi lần thất bại là một bước tiến gần hơn đến thành công.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Kiên trì và không bỏ cuộc là chìa khóa của thành công. Hãy tiếp tục cố gắng ngay cả khi gặp khó khăn.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&crop=center'
+                }
+            ]
+        },
+        'su-chia-se': {
+            title: 'Sự chia sẻ',
+            stories: [
+                {
+                    id: '5',
+                    title: 'Làm việc nhóm',
+                    description: 'Học cách hợp tác và làm việc cùng bạn bè để đạt được mục tiêu chung',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Làm việc nhóm</h3>
+                            <div class="story-text">
+                                <p>Minh, Lan và Hoa được cô giáo giao nhiệm vụ làm một dự án về môi trường. Ban đầu, cả ba đều muốn làm theo ý kiến của mình và không chịu lắng nghe nhau.</p>
+                                
+                                <p>Minh muốn làm poster về rừng, Lan muốn làm video về biển, còn Hoa muốn làm mô hình về thành phố xanh. Cả ba đều cãi nhau và không ai chịu nhường ai.</p>
+                                
+                                <p>Cô giáo đã dạy các bạn: "Làm việc nhóm không có nghĩa là ai cũng phải làm giống nhau. Mỗi người có thể đóng góp ý tưởng riêng, nhưng cần biết lắng nghe và hợp tác với nhau."</p>
+                                
+                                <p>Từ đó, ba bạn đã học cách chia sẻ ý tưởng và lắng nghe nhau. Minh vẽ poster rừng, Lan quay video biển, còn Hoa làm mô hình thành phố. Kết quả là một dự án hoàn chỉnh về môi trường.</p>
+                                
+                                <p>Khi trình bày trước lớp, cả ba đều tự hào về thành quả chung. Họ nhận ra rằng khi hợp tác, mọi việc sẽ dễ dàng và thú vị hơn nhiều.</p>
+                                
+                                <p>Từ đó, ba bạn trở thành nhóm bạn thân và thường xuyên làm việc cùng nhau. Họ học được rằng tình bạn và sự hợp tác là chìa khóa của thành công.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Làm việc nhóm giúp chúng ta học hỏi từ nhau và đạt được kết quả tốt hơn. Hãy lắng nghe, chia sẻ và hợp tác với bạn bè.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '22',
+                    title: 'Chia sẻ đồ chơi',
+                    description: 'Học cách chia sẻ đồ chơi và đồ dùng với bạn bè',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chia sẻ đồ chơi</h3>
+                            <div class="story-text">
+                                <p>Nam là một cậu bé 7 tuổi có rất nhiều đồ chơi đẹp. Cậu thường giữ riêng tất cả đồ chơi và không cho ai chơi cùng. Điều này khiến các bạn không muốn chơi với Nam.</p>
+                                
+                                <p>Một ngày, bạn Minh đến nhà Nam chơi. Minh thấy chiếc xe điều khiển từ xa rất đẹp và muốn chơi cùng. Nhưng Nam từ chối: "Đây là đồ chơi của mình, mình không cho ai chơi."</p>
+                                
+                                <p>Minh buồn bã và về nhà. Nam cảm thấy cô đơn vì không có ai chơi cùng. Mẹ Nam thấy vậy và nói: "Con ơi, đồ chơi sẽ vui hơn khi có bạn cùng chơi. Hãy thử chia sẻ với bạn bè nhé."</p>
+                                
+                                <p>Nam bắt đầu thay đổi. Cậu mời Minh đến chơi và cho bạn chơi xe điều khiển. Hai bạn cùng chơi rất vui vẻ và cười đùa suốt buổi chiều.</p>
+                                
+                                <p>Từ đó, Nam thường xuyên chia sẻ đồ chơi với bạn bè. Cậu nhận ra rằng khi chia sẻ, mình có nhiều bạn bè hơn và vui vẻ hơn nhiều.</p>
+                                
+                                <p>Nam học được rằng chia sẻ không có nghĩa là mất đi, mà là nhận được nhiều hơn: tình bạn, niềm vui, và sự hạnh phúc.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Chia sẻ đồ chơi và đồ dùng giúp chúng ta có nhiều bạn bè và vui vẻ hơn. Hãy học cách chia sẻ với mọi người xung quanh.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '23',
+                    title: 'Chia sẻ kiến thức',
+                    description: 'Học cách chia sẻ kiến thức và giúp đỡ bạn bè học tập',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chia sẻ kiến thức</h3>
+                            <div class="story-text">
+                                <p>Hoa là một cô bé 9 tuổi rất giỏi toán. Cô bé thường giải được những bài toán khó mà các bạn khác không làm được. Nhưng Hoa không bao giờ giúp đỡ bạn bè.</p>
+                                
+                                <p>Một ngày, bạn Lan gặp khó khăn với bài toán về phân số. Lan hỏi Hoa: "Bạn có thể giúp mình giải bài này không?" Nhưng Hoa từ chối: "Mình không có thời gian, bạn tự làm đi."</p>
+                                
+                                <p>Lan buồn bã và phải nhờ cô giáo giúp đỡ. Cô giáo thấy vậy và nói với Hoa: "Con ơi, khi con chia sẻ kiến thức với bạn, con cũng học được nhiều điều. Hãy giúp đỡ bạn bè nhé."</p>
+                                
+                                <p>Hoa bắt đầu thay đổi. Cô bé chủ động giúp Lan giải bài toán về phân số. Khi giảng giải, Hoa cũng hiểu rõ hơn về kiến thức của mình.</p>
+                                
+                                <p>Từ đó, Hoa thường xuyên giúp đỡ bạn bè trong học tập. Cô bé nhận ra rằng khi chia sẻ kiến thức, mình trở thành người bạn tốt và được mọi người yêu quý.</p>
+                                
+                                <p>Hoa học được rằng kiến thức sẽ tăng lên khi được chia sẻ. Giúp đỡ bạn bè học tập là cách tốt nhất để củng cố kiến thức của bản thân.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Chia sẻ kiến thức giúp chúng ta học hỏi thêm và trở thành người bạn tốt. Hãy giúp đỡ bạn bè trong học tập.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '24',
+                    title: 'Chia sẻ cảm xúc',
+                    description: 'Học cách chia sẻ cảm xúc và tâm sự với người thân',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chia sẻ cảm xúc</h3>
+                            <div class="story-text">
+                                <p>Minh là một cậu bé 8 tuổi thường giữ kín cảm xúc của mình. Khi buồn, tức giận, hoặc lo lắng, cậu không bao giờ nói với ai. Điều này khiến Minh cảm thấy cô đơn và khó chịu.</p>
+                                
+                                <p>Một ngày, Minh bị điểm kém và cảm thấy rất buồn. Cậu ngồi một mình trong phòng và khóc. Mẹ Minh thấy vậy và hỏi: "Con ơi, có chuyện gì vậy? Hãy chia sẻ với mẹ nhé."</p>
+                                
+                                <p>Ban đầu Minh không muốn nói, nhưng mẹ kiên nhẫn động viên. Cuối cùng, Minh đã chia sẻ về việc bị điểm kém và cảm giác thất vọng của mình.</p>
+                                
+                                <p>Mẹ đã ôm Minh và nói: "Con ơi, mẹ hiểu cảm giác của con. Điểm kém không có nghĩa là con kém cỏi. Hãy cố gắng hơn lần sau nhé." Minh cảm thấy nhẹ nhõm hơn nhiều.</p>
+                                
+                                <p>Từ đó, Minh học cách chia sẻ cảm xúc với gia đình và bạn bè. Cậu nhận ra rằng khi chia sẻ, mình cảm thấy được thấu hiểu và yêu thương.</p>
+                                
+                                <p>Minh học được rằng chia sẻ cảm xúc không phải là yếu đuối, mà là cách để nhận được sự hỗ trợ và yêu thương từ những người xung quanh.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Chia sẻ cảm xúc giúp chúng ta nhận được sự hỗ trợ và yêu thương. Hãy mở lòng với gia đình và bạn bè.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                },
+                {
+                    id: '25',
+                    title: 'Chia sẻ thời gian',
+                    description: 'Học cách chia sẻ thời gian và quan tâm đến người khác',
+                    content: `
+                        <div class="story-content-full">
+                            <h3>Chia sẻ thời gian</h3>
+                            <div class="story-text">
+                                <p>Lan là một cô bé 10 tuổi rất bận rộn với việc học và chơi. Cô bé thường không có thời gian để chơi với em trai hoặc giúp đỡ bố mẹ. Lan nghĩ rằng thời gian của mình rất quý giá.</p>
+                                
+                                <p>Một ngày, em trai Lan bị ốm và muốn chị chơi cùng. Nhưng Lan từ chối: "Em ơi, chị đang bận học, em chơi một mình đi." Em trai buồn bã và khóc.</p>
+                                
+                                <p>Mẹ Lan thấy vậy và nói: "Con ơi, thời gian là món quà quý giá nhất mà con có thể chia sẻ với người thân. Hãy dành thời gian cho em trai nhé."</p>
+                                
+                                <p>Lan bắt đầu thay đổi. Cô bé dành 30 phút mỗi ngày để chơi với em trai, đọc truyện cho em nghe, và giúp em làm bài tập. Em trai rất vui vì được chị quan tâm.</p>
+                                
+                                <p>Từ đó, Lan cũng dành thời gian giúp bố mẹ làm việc nhà và trò chuyện với gia đình. Cô bé nhận ra rằng khi chia sẻ thời gian, mình nhận được nhiều tình yêu thương hơn.</p>
+                                
+                                <p>Lan học được rằng thời gian là món quà quý giá nhất. Chia sẻ thời gian với người thân là cách thể hiện tình yêu thương tốt nhất.</p>
+                            </div>
+                            <div class="story-moral">
+                                <h4>Bài học:</h4>
+                                <p>Thời gian là món quà quý giá nhất. Hãy chia sẻ thời gian với gia đình và bạn bè để thể hiện tình yêu thương.</p>
+                            </div>
+                        </div>
+                    `,
+                    image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=200&fit=crop&crop=center'
+                }
+            ]
+        }
+    };
+    
+    // Handle topic card clicks
+    topicCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const topicId = card.getAttribute('data-topic');
+            const topic = topicData[topicId];
+            
+            if (topic) {
+                showStoriesForTopic(topicId, topic);
+            }
+        });
+    });
+    
+    // Handle back to topics button
+    if (backToTopicsBtn) {
+        backToTopicsBtn.addEventListener('click', () => {
+            topicCardsGrid.style.display = 'grid';
+            storiesList.style.display = 'none';
+        });
+    }
+    
+    function showStoriesForTopic(topicId, topic) {
+        // Hide topic cards grid
+        topicCardsGrid.style.display = 'none';
+        
+        // Show stories list
+        storiesList.style.display = 'block';
+        
+        // Update title
+        const storiesListTitle = document.getElementById('storiesListTitle');
+        if (storiesListTitle) {
+            storiesListTitle.textContent = `Những câu chuyện trong chủ đề ${topic.title}`;
+        }
+        
+               // Render stories
+               const storiesGrid = document.getElementById('storiesGrid');
+               if (storiesGrid) {
+                   storiesGrid.innerHTML = topic.stories.map(story => `
+                       <div class="story-card flip-in-y hover-glow" data-story="${story.id}">
+                           <div class="story-cover">
+                               <div class="story-icon">
+                                   <i class="fas fa-book-open"></i>
+                               </div>
+                           </div>
+                           <div class="story-content">
+                               <h4>${story.title}</h4>
+                               <p>${story.description}</p>
+                           </div>
+                           <button class="read-story-btn">Đọc ngay</button>
+                       </div>
+                   `).join('');
+            
+            // Add event listeners to story cards
+            storiesGrid.querySelectorAll('.story-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const storyId = card.getAttribute('data-story');
+                    const story = topic.stories.find(s => s.id === storyId);
+                    if (story) {
+                        showStoryModal(story.title, story.content);
+                        // Mark story as read
+                        userProgress.readStory(storyId);
+                    }
+                });
+            });
+        }
+    }
+}
+
+// Topics loader (stories/videos by topic)
+function initTopics() {
+    const topicsGrid = document.getElementById('topicsGrid');
+    const itemsGrid = document.getElementById('itemsGrid');
+    const topicItems = document.getElementById('topicItems');
+    const topicTitle = document.getElementById('topicTitle');
+    const backBtn = document.getElementById('backToTopics');
+    if (!topicsGrid || !itemsGrid || !topicItems || !topicTitle || !backBtn) return;
+
+    const categories = [
+        { id: 'cam-xuc-co-ban', title: 'Cảm xúc cơ bản' },
+        { id: 'tinh-ban', title: 'Tình bạn' },
+        { id: 'gia-dinh', title: 'Gia đình' },
+        { id: 'tu-lap', title: 'Tự lập' },
+        { id: 'chia-se', title: 'Sự chia sẻ' }
+    ];
+
+    // Render topics
+    topicsGrid.innerHTML = categories.map(c => `
+        <div class="topic-card" data-id="${c.id}">
+            <div class="topic-icon"><i class="fas fa-folder"></i></div>
+            <div class="topic-info">
+                <h4>${c.title}</h4>
+                <p>Xem nội dung theo chủ đề</p>
+            </div>
+        </div>
+    `).join('');
+
+    topicsGrid.addEventListener('click', async (e) => {
+        const card = e.target.closest('.topic-card');
+        if (!card) return;
+        const id = card.getAttribute('data-id');
+        const meta = categories.find(x => x.id === id);
+        await loadTopic(id, meta?.title || 'Chủ đề');
+    });
+
+    backBtn.addEventListener('click', () => {
+        topicItems.style.display = 'none';
+        topicsGrid.style.display = 'grid';
+    });
+
+    async function loadTopic(id, title) {
+        try {
+            topicsGrid.style.display = 'none';
+            topicItems.style.display = 'block';
+            topicTitle.textContent = title;
+
+            // Load JSON from content/stories/{id}/index.json
+            const res = await fetch(`content/stories/${id}/index.json`);
+            const data = await res.json();
+            const stories = Array.isArray(data.stories) ? data.stories : [];
+
+            if (stories.length === 0) {
+                itemsGrid.innerHTML = `<div class="empty">Chưa có nội dung trong chủ đề này. Bạn có thể thêm file JSON trong thư mục content/stories/${id}/index.json</div>`;
+                return;
+            }
+
+            itemsGrid.innerHTML = stories.map(item => {
+                const isVideo = item.type === 'video';
+                return `
+                <div class="topic-item ${isVideo ? 'video' : 'story'}">
+                    <div class="item-cover">
+                        <div class="item-icon"><i class="fas ${isVideo ? 'fa-video' : 'fa-book-open'}"></i></div>
+                    </div>
+                    <div class="item-content">
+                        <h5>${item.title || 'Nội dung'}</h5>
+                        <p>${item.description || ''}</p>
+                        <div class="item-actions">
+                            ${isVideo ? `<a class="btn" href="${item.url}" target="_blank" rel="noopener">Xem video</a>`
+                                      : `<button class="btn read-item" data-title="${encodeURIComponent(item.title || '')}" data-content="${encodeURIComponent(item.content || '')}">Đọc</button>`}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Bind read buttons
+            itemsGrid.querySelectorAll('.read-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const t = decodeURIComponent(btn.getAttribute('data-title') || '');
+                    const c = decodeURIComponent(btn.getAttribute('data-content') || '');
+                    showStoryModal(t || 'Câu chuyện', `<div class="story-content-full"><div class="story-text"><p>${c.replace(/\n/g,'</p><p>')}</p></div></div>`);
+                });
+            });
+        } catch (e) {
+            itemsGrid.innerHTML = `<div class="empty">Không thể tải nội dung. Vui lòng kiểm tra file JSON.</div>`;
+        }
     }
 }
 
