@@ -1,6 +1,32 @@
 // Kham Pha Interactive Features
 console.log('Kham Pha JS loaded!');
 
+document.addEventListener('DOMContentLoaded', function(){
+    const video = document.getElementById('musicPlayer');
+
+    // Handle video buttons on kham-pha page
+    document.querySelectorAll('.video-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Toggle active state
+            document.querySelectorAll('.video-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const src = btn.getAttribute('data-src');
+            if (video && src) {
+                video.pause();
+                video.src = src;
+                video.load();
+                const playPromise = video.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.catch(error => {
+                        console.log('Video playback failed:', error);
+                    });
+                }
+            }
+        });
+    });
+});
+
 // User Data Management
 class UserProgress {
     constructor() {
