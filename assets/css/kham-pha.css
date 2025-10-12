@@ -216,12 +216,11 @@
     margin-bottom: 20px;
 }
 
-.video-list h4 {
-    color: var(--text-dark);
+.video-list p {
     margin-bottom: 15px;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.3rem;
     text-align: center;
+    
+    color: var(--text-light);
 }
 
 .video-buttons {
